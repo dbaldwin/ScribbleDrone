@@ -61,6 +61,14 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func addMarker(loc: CLLocationCoordinate2D) {
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        marker.groundAnchor = CGPoint(x: 0.5, y: 0.5);
+        marker.icon = UIImage(named: "waypoint");
+        marker.map = googleMapView
+    }
+    
     // Take the coordinates drawn from the canvas view and simplifies them based on tolerance
     func drawSimplifiedGooglePath(tolerance: Float) {
         print("There are " + String(self.coordinates.count) + " coordinates")
@@ -80,8 +88,12 @@ class ViewController: UIViewController {
         // Loop through the coordinates and create the polyline
         let path = GMSMutablePath()
         
+        // Add coordinates to the path
         for loc in simplified {
             path.add(loc)
+            
+            // Add waypoint marker to the map
+            addMarker(loc: loc)
         }
         
         // Update the distance label

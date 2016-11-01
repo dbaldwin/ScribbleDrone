@@ -44,7 +44,7 @@
                                     <action selector="resetDrawing:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MpS-nB-VRo"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.001" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.00050000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="cKJ-0f-koA"/>
                                     <constraint firstAttribute="height" constant="30" id="y0w-cq-uKf"/>
