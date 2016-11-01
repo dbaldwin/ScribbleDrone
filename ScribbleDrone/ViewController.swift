@@ -137,6 +137,8 @@ class ViewController: UIViewController {
         toleranceSlider.value = 0.0
         toleranceLabel.text = "0.0"
         
+        distanceLabel.text = "Distance: 0 ft"
+        
     }
     
     
