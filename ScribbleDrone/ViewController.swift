@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var toleranceLabel: UILabel!
     
+    @IBOutlet weak var distanceLabel: UILabel!
     var coordinates = [CLLocationCoordinate2D]()
     
     
@@ -70,7 +71,7 @@ class ViewController: UIViewController {
         
         print("Number of points after simplification " + String(simplified.count))
         
-        waypointLabel.text = String(simplified.count) + " waypoints"
+        waypointLabel.text = "Waypoints: " + String(simplified.count)
         
         // Get rid of the canvas view
         self.canvasView.removeFromSuperview()
@@ -82,6 +83,11 @@ class ViewController: UIViewController {
         for loc in simplified {
             path.add(loc)
         }
+        
+        // Update the distance label
+        let distance = GMSGeometryLength(path)
+        
+        distanceLabel.text = "Distance: " + String(Int(distance)) + " ft"
         
         let polyLine = GMSPolyline(path: path)
         polyLine.strokeWidth = 3
@@ -127,7 +133,7 @@ class ViewController: UIViewController {
         self.canvasView.image = nil
         self.canvasView.removeFromSuperview()
         
-        waypointLabel.text = "0 waypoints"
+        waypointLabel.text = "Waypoints: 0"
         toleranceSlider.value = 0.0
         toleranceLabel.text = "0.0"
         
