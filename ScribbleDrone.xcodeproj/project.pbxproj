@@ -1,0 +1,573 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1163B76734A31A40E8E5B7A6 /* libPods-ScribbleDrone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F004ECC9FDB7B59FBEE7F670 /* libPods-ScribbleDrone.a */; };
+		230B3C021DC6B8300093A3C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B3C011DC6B8300093A3C3 /* AppDelegate.swift */; };
+		230B3C041DC6B8300093A3C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B3C031DC6B8300093A3C3 /* ViewController.swift */; };
+		230B3C071DC6B8300093A3C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 230B3C051DC6B8300093A3C3 /* Main.storyboard */; };
+		230B3C091DC6B8310093A3C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 230B3C081DC6B8310093A3C3 /* Assets.xcassets */; };
+		230B3C0C1DC6B8310093A3C3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 230B3C0A1DC6B8310093A3C3 /* LaunchScreen.storyboard */; };
+		230B3C171DC6B8310093A3C3 /* ScribbleDroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B3C161DC6B8310093A3C3 /* ScribbleDroneTests.swift */; };
+		230B3C231DC6DE1B0093A3C3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 230B3C221DC6DE1B0093A3C3 /* Podfile */; };
+		230B3C261DC6E42A0093A3C3 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B3C251DC6E42A0093A3C3 /* CanvasView.swift */; };
+		236EBDD01DC78E3E00902779 /* SwiftSimplify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */; };
+		D95371469372FD052A73EA19 /* libPods-ScribbleDroneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		230B3C131DC6B8310093A3C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 230B3BF61DC6B8300093A3C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 230B3BFD1DC6B8300093A3C3;
+			remoteInfo = ScribbleDrone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		230B3BFE1DC6B8300093A3C3 /* ScribbleDrone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScribbleDrone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		230B3C011DC6B8300093A3C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		230B3C031DC6B8300093A3C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		230B3C061DC6B8300093A3C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		230B3C081DC6B8310093A3C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		230B3C0B1DC6B8310093A3C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		230B3C0D1DC6B8310093A3C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		230B3C121DC6B8310093A3C3 /* ScribbleDroneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScribbleDroneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		230B3C161DC6B8310093A3C3 /* ScribbleDroneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribbleDroneTests.swift; sourceTree = "<group>"; };
+		230B3C181DC6B8310093A3C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		230B3C221DC6DE1B0093A3C3 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		230B3C251DC6E42A0093A3C3 /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSimplify.swift; sourceTree = "<group>"; };
+		7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScribbleDroneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3F6ACD0ADBF3196CE7DAF94 /* Pods-ScribbleDroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDroneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests.release.xcconfig"; sourceTree = "<group>"; };
+		B5D0459D5A1B5FF14EE85293 /* Pods-ScribbleDrone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDrone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone.debug.xcconfig"; sourceTree = "<group>"; };
+		D2C077DFA3B9464F7C05DD5B /* Pods-ScribbleDrone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDrone.release.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone.release.xcconfig"; sourceTree = "<group>"; };
+		F004ECC9FDB7B59FBEE7F670 /* libPods-ScribbleDrone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScribbleDrone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F25B4B5E168644A3D0AE576B /* Pods-ScribbleDroneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDroneTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		230B3BFB1DC6B8300093A3C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1163B76734A31A40E8E5B7A6 /* libPods-ScribbleDrone.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		230B3C0F1DC6B8310093A3C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D95371469372FD052A73EA19 /* libPods-ScribbleDroneTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		230B3BF51DC6B8300093A3C3 = {
+			isa = PBXGroup;
+			children = (
+				230B3C221DC6DE1B0093A3C3 /* Podfile */,
+				230B3C001DC6B8300093A3C3 /* ScribbleDrone */,
+				230B3C151DC6B8310093A3C3 /* ScribbleDroneTests */,
+				230B3BFF1DC6B8300093A3C3 /* Products */,
+				B158B4BEC0C4898FB1E62CD7 /* Pods */,
+				586F1BD870797375C2D4FA33 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		230B3BFF1DC6B8300093A3C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				230B3BFE1DC6B8300093A3C3 /* ScribbleDrone.app */,
+				230B3C121DC6B8310093A3C3 /* ScribbleDroneTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		230B3C001DC6B8300093A3C3 /* ScribbleDrone */ = {
+			isa = PBXGroup;
+			children = (
+				230B3C011DC6B8300093A3C3 /* AppDelegate.swift */,
+				230B3C031DC6B8300093A3C3 /* ViewController.swift */,
+				230B3C051DC6B8300093A3C3 /* Main.storyboard */,
+				230B3C081DC6B8310093A3C3 /* Assets.xcassets */,
+				230B3C0A1DC6B8310093A3C3 /* LaunchScreen.storyboard */,
+				230B3C0D1DC6B8310093A3C3 /* Info.plist */,
+				230B3C251DC6E42A0093A3C3 /* CanvasView.swift */,
+				236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */,
+			);
+			path = ScribbleDrone;
+			sourceTree = "<group>";
+		};
+		230B3C151DC6B8310093A3C3 /* ScribbleDroneTests */ = {
+			isa = PBXGroup;
+			children = (
+				230B3C161DC6B8310093A3C3 /* ScribbleDroneTests.swift */,
+				230B3C181DC6B8310093A3C3 /* Info.plist */,
+			);
+			path = ScribbleDroneTests;
+			sourceTree = "<group>";
+		};
+		586F1BD870797375C2D4FA33 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F004ECC9FDB7B59FBEE7F670 /* libPods-ScribbleDrone.a */,
+				7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B158B4BEC0C4898FB1E62CD7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B5D0459D5A1B5FF14EE85293 /* Pods-ScribbleDrone.debug.xcconfig */,
+				D2C077DFA3B9464F7C05DD5B /* Pods-ScribbleDrone.release.xcconfig */,
+				F25B4B5E168644A3D0AE576B /* Pods-ScribbleDroneTests.debug.xcconfig */,
+				A3F6ACD0ADBF3196CE7DAF94 /* Pods-ScribbleDroneTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		230B3BFD1DC6B8300093A3C3 /* ScribbleDrone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 230B3C1B1DC6B8310093A3C3 /* Build configuration list for PBXNativeTarget "ScribbleDrone" */;
+			buildPhases = (
+				EE8101DE9BECE6B538A0312F /* [CP] Check Pods Manifest.lock */,
+				230B3BFA1DC6B8300093A3C3 /* Sources */,
+				230B3BFB1DC6B8300093A3C3 /* Frameworks */,
+				230B3BFC1DC6B8300093A3C3 /* Resources */,
+				9A0C97DB6390280CA4168C5E /* [CP] Embed Pods Frameworks */,
+				CA8EA995893A3E79F8085E73 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScribbleDrone;
+			productName = ScribbleDrone;
+			productReference = 230B3BFE1DC6B8300093A3C3 /* ScribbleDrone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		230B3C111DC6B8310093A3C3 /* ScribbleDroneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 230B3C1E1DC6B8310093A3C3 /* Build configuration list for PBXNativeTarget "ScribbleDroneTests" */;
+			buildPhases = (
+				8AC76FC79240BF62E651F5D1 /* [CP] Check Pods Manifest.lock */,
+				230B3C0E1DC6B8310093A3C3 /* Sources */,
+				230B3C0F1DC6B8310093A3C3 /* Frameworks */,
+				230B3C101DC6B8310093A3C3 /* Resources */,
+				7E3361164B5FABE7CFF91275 /* [CP] Embed Pods Frameworks */,
+				42FFC79922622EF18707166B /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				230B3C141DC6B8310093A3C3 /* PBXTargetDependency */,
+			);
+			name = ScribbleDroneTests;
+			productName = ScribbleDroneTests;
+			productReference = 230B3C121DC6B8310093A3C3 /* ScribbleDroneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		230B3BF61DC6B8300093A3C3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Unmanned Airlines, LLC";
+				TargetAttributes = {
+					230B3BFD1DC6B8300093A3C3 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = TP7ZU94CZV;
+						ProvisioningStyle = Automatic;
+					};
+					230B3C111DC6B8310093A3C3 = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 230B3BFD1DC6B8300093A3C3;
+					};
+				};
+			};
+			buildConfigurationList = 230B3BF91DC6B8300093A3C3 /* Build configuration list for PBXProject "ScribbleDrone" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 230B3BF51DC6B8300093A3C3;
+			productRefGroup = 230B3BFF1DC6B8300093A3C3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				230B3BFD1DC6B8300093A3C3 /* ScribbleDrone */,
+				230B3C111DC6B8310093A3C3 /* ScribbleDroneTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		230B3BFC1DC6B8300093A3C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				230B3C0C1DC6B8310093A3C3 /* LaunchScreen.storyboard in Resources */,
+				230B3C091DC6B8310093A3C3 /* Assets.xcassets in Resources */,
+				230B3C231DC6DE1B0093A3C3 /* Podfile in Resources */,
+				230B3C071DC6B8300093A3C3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		230B3C101DC6B8310093A3C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		42FFC79922622EF18707166B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E3361164B5FABE7CFF91275 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8AC76FC79240BF62E651F5D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9A0C97DB6390280CA4168C5E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA8EA995893A3E79F8085E73 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE8101DE9BECE6B538A0312F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		230B3BFA1DC6B8300093A3C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				236EBDD01DC78E3E00902779 /* SwiftSimplify.swift in Sources */,
+				230B3C041DC6B8300093A3C3 /* ViewController.swift in Sources */,
+				230B3C021DC6B8300093A3C3 /* AppDelegate.swift in Sources */,
+				230B3C261DC6E42A0093A3C3 /* CanvasView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		230B3C0E1DC6B8310093A3C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				230B3C171DC6B8310093A3C3 /* ScribbleDroneTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		230B3C141DC6B8310093A3C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 230B3BFD1DC6B8300093A3C3 /* ScribbleDrone */;
+			targetProxy = 230B3C131DC6B8310093A3C3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		230B3C051DC6B8300093A3C3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				230B3C061DC6B8300093A3C3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		230B3C0A1DC6B8310093A3C3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				230B3C0B1DC6B8310093A3C3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		230B3C191DC6B8310093A3C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		230B3C1A1DC6B8310093A3C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		230B3C1C1DC6B8310093A3C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5D0459D5A1B5FF14EE85293 /* Pods-ScribbleDrone.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TP7ZU94CZV;
+				INFOPLIST_FILE = ScribbleDrone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = come.unmannedairlines.ScribbleDrone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		230B3C1D1DC6B8310093A3C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2C077DFA3B9464F7C05DD5B /* Pods-ScribbleDrone.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TP7ZU94CZV;
+				INFOPLIST_FILE = ScribbleDrone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = come.unmannedairlines.ScribbleDrone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		230B3C1F1DC6B8310093A3C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F25B4B5E168644A3D0AE576B /* Pods-ScribbleDroneTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ScribbleDroneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unmannedairlines.ScribbleDroneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScribbleDrone.app/ScribbleDrone";
+			};
+			name = Debug;
+		};
+		230B3C201DC6B8310093A3C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3F6ACD0ADBF3196CE7DAF94 /* Pods-ScribbleDroneTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ScribbleDroneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unmannedairlines.ScribbleDroneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScribbleDrone.app/ScribbleDrone";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		230B3BF91DC6B8300093A3C3 /* Build configuration list for PBXProject "ScribbleDrone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				230B3C191DC6B8310093A3C3 /* Debug */,
+				230B3C1A1DC6B8310093A3C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		230B3C1B1DC6B8310093A3C3 /* Build configuration list for PBXNativeTarget "ScribbleDrone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				230B3C1C1DC6B8310093A3C3 /* Debug */,
+				230B3C1D1DC6B8310093A3C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		230B3C1E1DC6B8310093A3C3 /* Build configuration list for PBXNativeTarget "ScribbleDroneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				230B3C1F1DC6B8310093A3C3 /* Debug */,
+				230B3C201DC6B8310093A3C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 230B3BF61DC6B8300093A3C3 /* Project object */;
+}
