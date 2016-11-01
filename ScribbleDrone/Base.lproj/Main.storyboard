@@ -16,7 +16,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNa-EI-9TI" userLabel="Google Map View" customClass="GMSMapView">
@@ -44,7 +44,7 @@
                                     <action selector="resetDrawing:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MpS-nB-VRo"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.001" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="cKJ-0f-koA"/>
                                     <constraint firstAttribute="height" constant="30" id="y0w-cq-uKf"/>

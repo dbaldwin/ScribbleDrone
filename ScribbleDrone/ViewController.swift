@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         //googleMapView.delegate = self
         
         
-        let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: 41.850033, longitude: -87.6500523, zoom: 4)
+        let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: 41.850033, longitude: -87.6500523, zoom: 16)
         googleMapView.camera = camera
         googleMapView.isMyLocationEnabled = true
         
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
     func drawSimplifiedGooglePath(tolerance: Float) {
         print("There are " + String(self.coordinates.count) + " coordinates")
         
-        let simplified = SwiftSimplify.simplify(self.coordinates, tolerance: tolerance, highQuality: false)
+        let simplified = SwiftSimplify.simplify(self.coordinates, tolerance: tolerance, highQuality: true)
         
         print("Number of points before simplification: " + String(self.coordinates.count))
         
@@ -93,7 +93,7 @@ class ViewController: UIViewController {
     @IBAction func updateToleranceLabel(_ sender: AnyObject) {
         
         let slider = sender as! UISlider
-        toleranceLabel.text = String(format: "%.2f", slider.value)
+        toleranceLabel.text = String(format: "%.4f", slider.value)
         
     }
     
