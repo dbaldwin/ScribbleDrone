@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMaps
+import DJISDK
 
 class ViewController: UIViewController {
     
@@ -52,6 +53,9 @@ class ViewController: UIViewController {
         marker.title = "Sydney"
         marker.snippet = "Australia"
         marker.map = googleMapView*/
+        
+        // Register the app with DJI's servers
+        DJISDKManager.registerApp("aea456f841549cf018a786d3", with: self)
         
         
     }
@@ -185,4 +189,61 @@ extension ViewController:NotifyTouchEvents{
         
         
     }
+}
+
+// MARK: DJISDKManagerDelegate
+extension ViewController : DJISDKManagerDelegate
+{
+    func sdkManagerDidRegisterAppWithError(_ error: Error?) {
+        
+        guard error == nil  else {
+            print("Error:\(error!.localizedDescription)")
+            return
+        }
+        
+        print("Registered!")
+        
+        /*if enterDebugMode {
+            DJISDKManager.enterDebugMode(withDebugId: "10.81.2.28")
+        }else{
+            DJISDKManager.startConnectionToProduct()
+        }*/
+        
+        DJISDKManager.startConnectionToProduct()
+        
+    }
+    
+    func sdkManagerProductDidChange(from oldProduct: DJIBaseProduct?, to newProduct: DJIBaseProduct?) {
+        
+        guard let newProduct = newProduct else
+        {
+            print("Product Disconnected")
+            return
+        }
+        
+        //Updates the product's model
+        if let oldProduct = oldProduct {
+            print("Product changed from: \(oldProduct.model) to \((newProduct.model)!)")
+        }
+        //Updates the product's firmware version - COMING SOON
+        newProduct.getFirmwarePackageVersion{ (version:String?, error:Error?) -> Void in
+            
+            print("Firmware package version is: \(version ?? "Unknown")")
+            
+        }
+        
+        //Updates the product's connection status
+        print("Product Connected")
+        
+    }
+    
+    func product(_ product: DJIBaseProduct, connectivityChanged isConnected: Bool) {
+        if isConnected {
+            print("Product Connected")
+        } else {
+            print("Product Disconnected")
+        }
+    }
+    
+    
 }
