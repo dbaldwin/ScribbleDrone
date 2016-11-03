@@ -21,7 +21,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var toleranceLabel: UILabel!
     
     @IBOutlet weak var distanceLabel: UILabel!
+    
+    
+    @IBOutlet weak var statusLabel: UILabel!
+    
     var coordinates = [CLLocationCoordinate2D]()
+    
+    var waypointMission:DJIWaypointMission = DJIWaypointMission()
+    
+    var missionManager:DJIMissionManager = DJIMissionManager.sharedInstance()!
+    
+    // Stores coordinates that are used to create the waypoint mission
+    var waypointList: [AnyObject]=[]
     
     
     lazy var canvasView:CanvasView = {
@@ -92,12 +103,22 @@ class ViewController: UIViewController {
         // Loop through the coordinates and create the polyline
         let path = GMSMutablePath()
         
+        // Remove all waypoints from the list
+        waypointList.removeAll()
+        
         // Add coordinates to the path
         for loc in simplified {
+        
             path.add(loc)
             
             // Add waypoint marker to the map
             addMarker(loc: loc)
+            
+            // Initialize the waypoint
+            let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
+            
+            // Add waypoint to the list
+            waypointList.append(waypoint)
         }
         
         // Update the distance label
@@ -158,6 +179,43 @@ class ViewController: UIViewController {
     }
     
     
+    @IBAction func launchMission(_ sender: AnyObject) {
+        
+        // Remove all waypoints from mission before adding them
+        self.waypointMission.removeAllWaypoints()
+        
+        // Setup mission parameters
+        self.waypointMission.maxFlightSpeed = 10
+        self.waypointMission.autoFlightSpeed = 5
+        self.waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
+        self.waypointMission.headingMode = DJIWaypointMissionHeadingMode.usingWaypointHeading
+        self.waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        
+        // Add the waypoint list to the mission
+        self.waypointMission.addWaypoints(waypointList)
+        
+        // Upload the mission
+        self.missionManager.prepare(self.waypointMission, withProgress:
+        {[weak self] (progress: Float) -> Void in
+            
+            // This is where the upload status will go
+            
+        }, withCompletion:{[weak self] (error: Error?) -> Void in
+            
+            
+            if (error != nil) {
+                
+                print("Error uploading mission: \(error)")
+                
+            } else {
+                
+                print("Mission uploaded successfully")
+                
+            }
+            
+        })
+        
+    }
 }
 
 //MARK: GET DRAWABLE COORDINATES
@@ -234,13 +292,19 @@ extension ViewController : DJISDKManagerDelegate
         
         //Updates the product's connection status
         print("Product Connected")
+        statusLabel.text = "Status: Connected"
         
     }
     
     func product(_ product: DJIBaseProduct, connectivityChanged isConnected: Bool) {
         if isConnected {
+            
+            statusLabel.text = "Status: Connected"
             print("Product Connected")
+            
         } else {
+            
+            statusLabel.text = "Status: Disconnected"
             print("Product Disconnected")
         }
     }
