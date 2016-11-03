@@ -17,6 +17,8 @@
 		230B3C231DC6DE1B0093A3C3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 230B3C221DC6DE1B0093A3C3 /* Podfile */; };
 		230B3C261DC6E42A0093A3C3 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B3C251DC6E42A0093A3C3 /* CanvasView.swift */; };
 		236EBDD01DC78E3E00902779 /* SwiftSimplify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */; };
+		23DAEA161DCBBBB500B33BA8 /* DJISDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */; };
+		23DAEA181DCBBBE200B33BA8 /* DJISDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D95371469372FD052A73EA19 /* libPods-ScribbleDroneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +31,20 @@
 			remoteInfo = ScribbleDrone;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		23DAEA191DCBBBE200B33BA8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				23DAEA181DCBBBE200B33BA8 /* DJISDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		230B3BFE1DC6B8300093A3C3 /* ScribbleDrone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScribbleDrone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +60,7 @@
 		230B3C221DC6DE1B0093A3C3 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		230B3C251DC6E42A0093A3C3 /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSimplify.swift; sourceTree = "<group>"; };
+		23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DJISDK.framework; path = ScribbleDrone/Frameworks/DJISDK.framework; sourceTree = "<group>"; };
 		7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScribbleDroneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3F6ACD0ADBF3196CE7DAF94 /* Pods-ScribbleDroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDroneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B5D0459D5A1B5FF14EE85293 /* Pods-ScribbleDrone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDrone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone.debug.xcconfig"; sourceTree = "<group>"; };
@@ -58,6 +75,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1163B76734A31A40E8E5B7A6 /* libPods-ScribbleDrone.a in Frameworks */,
+				23DAEA161DCBBBB500B33BA8 /* DJISDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +138,7 @@
 		586F1BD870797375C2D4FA33 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */,
 				F004ECC9FDB7B59FBEE7F670 /* libPods-ScribbleDrone.a */,
 				7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */,
 			);
@@ -150,6 +169,7 @@
 				230B3BFC1DC6B8300093A3C3 /* Resources */,
 				9A0C97DB6390280CA4168C5E /* [CP] Embed Pods Frameworks */,
 				CA8EA995893A3E79F8085E73 /* [CP] Copy Pods Resources */,
+				23DAEA191DCBBBE200B33BA8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -485,6 +505,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TP7ZU94CZV;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ScribbleDrone/Frameworks",
+				);
 				INFOPLIST_FILE = ScribbleDrone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = come.unmannedairlines.ScribbleDrone;
@@ -499,6 +524,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TP7ZU94CZV;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ScribbleDrone/Frameworks",
+				);
 				INFOPLIST_FILE = ScribbleDrone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = come.unmannedairlines.ScribbleDrone;
