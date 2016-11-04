@@ -38,6 +38,12 @@ class ViewController: UIViewController {
     
     var isMapCenteredOnAircraft = false
     
+    var aircraftHeading:CLLocationDegrees = 0
+    
+    var aircraftLocation:CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+    
+    var aircraftMarker = GMSMarker()
+    
     
     lazy var canvasView:CanvasView = {
         
@@ -120,6 +126,9 @@ class ViewController: UIViewController {
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
             
+            // Setting altitude to 20m for now
+            waypoint.altitude = 20
+            
             // Add waypoint to the list
             waypointList.append(waypoint)
         }
@@ -133,6 +142,10 @@ class ViewController: UIViewController {
         polyLine.strokeWidth = 3
         polyLine.strokeColor = UIColor.magenta
         polyLine.map = googleMapView
+        
+        // Add aircraft back to the map
+        updateAircraftLocation()
+        
     }
     
     
@@ -179,6 +192,9 @@ class ViewController: UIViewController {
         
         distanceLabel.text = "Distance: 0 ft"
         
+        // Add aircraft back to the map
+        updateAircraftLocation()
+        
     }
     
     
@@ -191,7 +207,7 @@ class ViewController: UIViewController {
         waypointMission.maxFlightSpeed = 10
         waypointMission.autoFlightSpeed = 5
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
-        waypointMission.headingMode = DJIWaypointMissionHeadingMode.usingWaypointHeading
+        waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
         waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
         
         // Add the waypoint list to the mission
@@ -230,8 +246,25 @@ class ViewController: UIViewController {
             }
             
         })
+    }
+    
+    
+    func updateAircraftLocation() {
+        
+        // Display aircraft marker
+        aircraftMarker.position = aircraftLocation
+        
+        if(aircraftHeading < 0) {
+            aircraftHeading = aircraftHeading + 360;
+        }
+        
+        aircraftMarker.rotation = aircraftHeading
+        aircraftMarker.icon = UIImage(named: "aircraft")
+        aircraftMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
+        aircraftMarker.map = googleMapView
         
     }
+    
 }
 
 //MARK: GET DRAWABLE COORDINATES
@@ -340,6 +373,8 @@ extension ViewController : DJIFlightControllerDelegate {
     func flightController(_ fc: DJIFlightController, didUpdateSystemState state: DJIFlightControllerCurrentState) {
         
         satellitesLabel.text = "Satellites: " + String(state.satelliteCount)
+        aircraftLocation = state.aircraftLocation
+        aircraftHeading = (fc.compass?.heading)!
         
         if(!isMapCenteredOnAircraft) {
             
@@ -351,6 +386,8 @@ extension ViewController : DJIFlightControllerDelegate {
             googleMapView.camera = camera
             
         }
+        
+        updateAircraftLocation()
         
         
         //self.headingLabel.text = String(format: "%0.1f", fc.compass!.heading)
