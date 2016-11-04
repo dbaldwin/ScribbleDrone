@@ -22,8 +22,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var distanceLabel: UILabel!
     
-    
     @IBOutlet weak var statusLabel: UILabel!
+    
+    @IBOutlet weak var satellitesLabel: UILabel!
+    
     
     var coordinates = [CLLocationCoordinate2D]()
     
@@ -33,6 +35,8 @@ class ViewController: UIViewController {
     
     // Stores coordinates that are used to create the waypoint mission
     var waypointList: [AnyObject]=[]
+    
+    var isMapCenteredOnAircraft = false
     
     
     lazy var canvasView:CanvasView = {
@@ -67,7 +71,6 @@ class ViewController: UIViewController {
         
         // Register the app with DJI's servers
         DJISDKManager.registerApp("aea456f841549cf018a786d3", with: self)
-        
         
     }
 
@@ -128,7 +131,7 @@ class ViewController: UIViewController {
         
         let polyLine = GMSPolyline(path: path)
         polyLine.strokeWidth = 3
-        polyLine.strokeColor = UIColor.green
+        polyLine.strokeColor = UIColor.magenta
         polyLine.map = googleMapView
     }
     
@@ -182,20 +185,20 @@ class ViewController: UIViewController {
     @IBAction func launchMission(_ sender: AnyObject) {
         
         // Remove all waypoints from mission before adding them
-        self.waypointMission.removeAllWaypoints()
+        waypointMission.removeAllWaypoints()
         
         // Setup mission parameters
-        self.waypointMission.maxFlightSpeed = 10
-        self.waypointMission.autoFlightSpeed = 5
-        self.waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
-        self.waypointMission.headingMode = DJIWaypointMissionHeadingMode.usingWaypointHeading
-        self.waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        waypointMission.maxFlightSpeed = 10
+        waypointMission.autoFlightSpeed = 5
+        waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
+        waypointMission.headingMode = DJIWaypointMissionHeadingMode.usingWaypointHeading
+        waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
         
         // Add the waypoint list to the mission
-        self.waypointMission.addWaypoints(waypointList)
+        waypointMission.addWaypoints(waypointList)
         
         // Upload the mission
-        self.missionManager.prepare(self.waypointMission, withProgress:
+        missionManager.prepare(self.waypointMission, withProgress:
         {[weak self] (progress: Float) -> Void in
             
             // This is where the upload status will go
@@ -210,6 +213,19 @@ class ViewController: UIViewController {
             } else {
                 
                 print("Mission uploaded successfully")
+                
+                // Now begin the mission
+                self?.missionManager.startMissionExecution(completion: {[weak self] (error: Error?) -> Void in
+                    if (error != nil ) {
+                        
+                        print("Error starting mission: \(error)")
+                        
+                    } else {
+                        
+                        print("Launching mission")
+                        
+                    }
+                })
                 
             }
             
@@ -267,7 +283,9 @@ extension ViewController : DJISDKManagerDelegate
             DJISDKManager.startConnectionToProduct()
         }*/
         
-        DJISDKManager.startConnectionToProduct()
+        DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
+        
+        //DJISDKManager.startConnectionToProduct()
         
     }
     
@@ -283,6 +301,7 @@ extension ViewController : DJISDKManagerDelegate
         if let oldProduct = oldProduct {
             print("Product changed from: \(oldProduct.model) to \((newProduct.model)!)")
         }
+        
         //Updates the product's firmware version - COMING SOON
         newProduct.getFirmwarePackageVersion{ (version:String?, error:Error?) -> Void in
             
@@ -293,6 +312,10 @@ extension ViewController : DJISDKManagerDelegate
         //Updates the product's connection status
         print("Product Connected")
         statusLabel.text = "Status: Connected"
+        
+        // Setup the flight controller delegate
+        let fc = (DJISDKManager.product() as! DJIAircraft).flightController
+        fc?.delegate = self
         
     }
     
@@ -309,5 +332,30 @@ extension ViewController : DJISDKManagerDelegate
         }
     }
     
+}
+
+// MARK: DJIFlightControllerDelegate
+extension ViewController : DJIFlightControllerDelegate {
+    
+    func flightController(_ fc: DJIFlightController, didUpdateSystemState state: DJIFlightControllerCurrentState) {
+        
+        satellitesLabel.text = "Satellites: " + String(state.satelliteCount)
+        
+        if(!isMapCenteredOnAircraft) {
+            
+            print("Centering map")
+            
+            isMapCenteredOnAircraft = true
+            
+            let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: state.aircraftLocation.latitude, longitude: state.aircraftLocation.longitude, zoom: 16)
+            googleMapView.camera = camera
+            
+        }
+        
+        
+        //self.headingLabel.text = String(format: "%0.1f", fc.compass!.heading)
+        
+        
+    }
     
 }

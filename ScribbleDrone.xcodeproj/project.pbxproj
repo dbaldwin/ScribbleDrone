@@ -19,7 +19,6 @@
 		236EBDD01DC78E3E00902779 /* SwiftSimplify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */; };
 		23DAEA161DCBBBB500B33BA8 /* DJISDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */; };
 		23DAEA181DCBBBE200B33BA8 /* DJISDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		23DAEA1B1DCBC68F00B33BA8 /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DAEA1A1DCBC68F00B33BA8 /* FlightController.swift */; };
 		D95371469372FD052A73EA19 /* libPods-ScribbleDroneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +61,6 @@
 		230B3C251DC6E42A0093A3C3 /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSimplify.swift; sourceTree = "<group>"; };
 		23DAEA151DCBBBB500B33BA8 /* DJISDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DJISDK.framework; path = ScribbleDrone/Frameworks/DJISDK.framework; sourceTree = "<group>"; };
-		23DAEA1A1DCBC68F00B33BA8 /* FlightController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightController.swift; sourceTree = "<group>"; };
 		7EEF1C5A426F1DCE16C11A2A /* libPods-ScribbleDroneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScribbleDroneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3F6ACD0ADBF3196CE7DAF94 /* Pods-ScribbleDroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDroneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDroneTests/Pods-ScribbleDroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B5D0459D5A1B5FF14EE85293 /* Pods-ScribbleDrone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScribbleDrone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScribbleDrone/Pods-ScribbleDrone.debug.xcconfig"; sourceTree = "<group>"; };
@@ -124,7 +122,6 @@
 				230B3C0D1DC6B8310093A3C3 /* Info.plist */,
 				230B3C251DC6E42A0093A3C3 /* CanvasView.swift */,
 				236EBDCF1DC78E3E00902779 /* SwiftSimplify.swift */,
-				23DAEA1A1DCBC68F00B33BA8 /* FlightController.swift */,
 			);
 			path = ScribbleDrone;
 			sourceTree = "<group>";
@@ -368,7 +365,6 @@
 				230B3C041DC6B8300093A3C3 /* ViewController.swift in Sources */,
 				230B3C021DC6B8300093A3C3 /* AppDelegate.swift in Sources */,
 				230B3C261DC6E42A0093A3C3 /* CanvasView.swift in Sources */,
-				23DAEA1B1DCBC68F00B33BA8 /* FlightController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

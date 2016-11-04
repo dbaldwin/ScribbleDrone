@@ -57,7 +57,7 @@ class CanvasView: UIImageView {
         
         context?.setLineCap(.round)
         context?.setLineWidth(brushWidth)
-        context?.setStrokeColor(UIColor.black.cgColor)
+        context?.setStrokeColor(UIColor.magenta.cgColor)
         context?.setBlendMode(.normal)
         context?.strokePath()
         
