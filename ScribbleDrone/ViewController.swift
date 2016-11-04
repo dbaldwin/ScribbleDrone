@@ -18,14 +18,11 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var waypointLabel: UILabel!
     
-    @IBOutlet weak var toleranceLabel: UILabel!
-    
     @IBOutlet weak var distanceLabel: UILabel!
     
     @IBOutlet weak var statusLabel: UILabel!
     
     @IBOutlet weak var satellitesLabel: UILabel!
-    
     
     var coordinates = [CLLocationCoordinate2D]()
     
@@ -129,6 +126,8 @@ class ViewController: UIViewController {
             // Setting altitude to 20m for now
             waypoint.altitude = 20
             
+            //waypoint.cornerRadiusInMeters = abcd
+            
             // Add waypoint to the list
             waypointList.append(waypoint)
         }
@@ -149,14 +148,14 @@ class ViewController: UIViewController {
     }
     
     
-    @IBAction func updateToleranceLabel(_ sender: AnyObject) {
+    /*@IBAction func updateToleranceLabel(_ sender: AnyObject) {
         
         let slider = sender as! UISlider
         toleranceLabel.text = String(format: "%.4f", slider.value)
         
-    }
+    }*/
     
-    
+    // Called on slider touch up inside
     @IBAction func updateSimplifiedPath(_ sender: AnyObject) {
         
         googleMapView.clear()
@@ -168,6 +167,16 @@ class ViewController: UIViewController {
         drawSimplifiedGooglePath(tolerance: slider.value)
         
     }
+    
+    // Just in case user slides too fast or beyond endpoints we'll cover the touch up outside
+    @IBAction func sliderTouchUpOutside(_ sender: AnyObject) {
+        
+        print("Touch up outside")
+        updateSimplifiedPath(sender)
+        
+    }
+    
+    
     
     
     @IBAction func beginDrawing(_ sender: AnyObject) {
@@ -188,7 +197,7 @@ class ViewController: UIViewController {
         
         waypointLabel.text = "Waypoints: 0"
         toleranceSlider.value = 0.0
-        toleranceLabel.text = "0.0"
+        //toleranceLabel.text = "0.0"
         
         distanceLabel.text = "Distance: 0 ft"
         
@@ -246,6 +255,18 @@ class ViewController: UIViewController {
             }
             
         })
+    }
+    
+    @IBAction func tiltMap(_ sender: AnyObject) {
+        
+        let toggle = sender as! UISwitch
+        
+        if(toggle.isOn) {
+            googleMapView.animate(toViewingAngle: 90)
+        } else {
+            googleMapView.animate(toViewingAngle: 0)
+        }
+        
     }
     
     
@@ -316,9 +337,9 @@ extension ViewController : DJISDKManagerDelegate
             DJISDKManager.startConnectionToProduct()
         }*/
         
-        DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
+        //DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
         
-        //DJISDKManager.startConnectionToProduct()
+        DJISDKManager.startConnectionToProduct()
         
     }
     

@@ -57,25 +57,25 @@
                                     <action selector="launchMission:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PbZ-u6-Rdv"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ISc-I5-bUl">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="GGc-1t-ZwP"/>
+                                    <constraint firstAttribute="width" constant="49" id="TaM-MZ-1zz"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="tiltMap:" destination="BYZ-38-t0r" eventType="valueChanged" id="oPA-ML-M6J"/>
+                                </connections>
+                            </switch>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.00050000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="246" id="cKJ-0f-koA"/>
                                     <constraint firstAttribute="height" constant="30" id="y0w-cq-uKf"/>
                                 </constraints>
                                 <connections>
+                                    <action selector="sliderTouchUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="LNe-ng-IOC"/>
                                     <action selector="updateSimplifiedPath:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vIl-IQ-TgU"/>
-                                    <action selector="updateToleranceLabel:" destination="BYZ-38-t0r" eventType="valueChanged" id="gDG-n9-OP7"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Mv-Zt-2Hh">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Mqm-mw-bDy"/>
-                                    <constraint firstAttribute="width" constant="70" id="roK-Vn-hky"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="15i-oa-0Hl">
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satellites: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg5-4N-Rrz">
@@ -153,9 +153,9 @@
                             <constraint firstItem="FrY-sQ-Vhw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dmg-AP-Ye4"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="W3w-fN-wZb" secondAttribute="bottom" constant="40" id="NEh-Oe-klz"/>
                             <constraint firstItem="kNa-EI-9TI" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="OU4-RU-hG5"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="8Mv-Zt-2Hh" secondAttribute="bottom" constant="45" id="VV1-mT-RR6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ISc-I5-bUl" secondAttribute="trailing" constant="80" id="Oc0-h2-Tlx"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FrY-sQ-Vhw" secondAttribute="bottom" constant="40" id="aT0-Eg-370"/>
-                            <constraint firstItem="8Mv-Zt-2Hh" firstAttribute="leading" secondItem="FrY-sQ-Vhw" secondAttribute="trailing" constant="15" id="bHY-48-MoP"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ISc-I5-bUl" secondAttribute="bottom" constant="40" id="g03-JE-jFq"/>
                             <constraint firstItem="15i-oa-0Hl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="geX-Ta-7h5"/>
                             <constraint firstItem="2TV-Gg-3hj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="mfC-Fw-zWP"/>
                             <constraint firstItem="W3w-fN-wZb" firstAttribute="leading" secondItem="2TV-Gg-3hj" secondAttribute="trailing" constant="15" id="rPh-ts-UKz"/>
@@ -166,7 +166,6 @@
                         <outlet property="googleMapView" destination="kNa-EI-9TI" id="qez-yR-4lp"/>
                         <outlet property="satellitesLabel" destination="Gg5-4N-Rrz" id="Hif-tD-Zdq"/>
                         <outlet property="statusLabel" destination="bNb-ui-Kpa" id="Kvs-ub-uTl"/>
-                        <outlet property="toleranceLabel" destination="8Mv-Zt-2Hh" id="Qnf-TD-03c"/>
                         <outlet property="toleranceSlider" destination="FrY-sQ-Vhw" id="FcH-9I-SRu"/>
                         <outlet property="waypointLabel" destination="SDP-zf-STV" id="0qf-HZ-Vk3"/>
                     </connections>
