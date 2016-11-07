@@ -54,9 +54,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //googleMapView.delegate = self
-        
-        
         let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: 41.850033, longitude: -87.6500523, zoom: 16)
         googleMapView.camera = camera
         googleMapView.isMyLocationEnabled = true
@@ -75,6 +72,9 @@ class ViewController: UIViewController {
         // Register the app with DJI's servers
         DJISDKManager.registerApp("aea456f841549cf018a786d3", with: self)
         
+        // We'll use to detect marker drag/drop
+        googleMapView.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -82,43 +82,59 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func addMarker(loc: CLLocationCoordinate2D) {
+    func addMarker(loc: CLLocationCoordinate2D, index: Int) {
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
         marker.groundAnchor = CGPoint(x: 0.5, y: 0.5);
         marker.icon = UIImage(named: "waypoint");
+        marker.isDraggable = true
+        marker.userData = index
         marker.map = googleMapView
     }
     
     // Take the coordinates drawn from the canvas view and simplifies them based on tolerance
     func drawSimplifiedGooglePath(tolerance: Float) {
-        print("There are " + String(self.coordinates.count) + " coordinates")
         
-        let simplified = SwiftSimplify.simplify(self.coordinates, tolerance: tolerance, highQuality: true)
+        print("Path tolerance: " + String(tolerance))
         
-        print("Number of points before simplification: " + String(self.coordinates.count))
+        print("There are " + String(coordinates.count) + " coordinates")
         
-        print("Number of points after simplification " + String(simplified.count))
+        let simplifiedCoordinates = SwiftSimplify.simplify(coordinates, tolerance: tolerance, highQuality: true)
         
-        waypointLabel.text = "Waypoints: " + String(simplified.count)
+        print("Number of points before simplification: " + String(coordinates.count))
+        
+        print("Number of points after simplification " + String(simplifiedCoordinates.count))
+        
+        waypointLabel.text = "Waypoints: " + String(simplifiedCoordinates.count)
         
         // Get rid of the canvas view
         self.canvasView.removeFromSuperview()
         self.canvasView.image = nil
         
-        // Loop through the coordinates and create the polyline
-        let path = GMSMutablePath()
+        // Draw the path on the map
+        addPathToMap(locations: simplifiedCoordinates)
+        
+    }
+    
+    // Draw the path on the map
+    func addPathToMap(locations: [CLLocationCoordinate2D]) {
         
         // Remove all waypoints from the list
         waypointList.removeAll()
         
-        // Add coordinates to the path
-        for loc in simplified {
+        // Loop through the coordinates and create the polyline
+        let path = GMSMutablePath()
         
+        // Store the marker's index so we can reference it on drag/drop events
+        var index = 0
+        
+        // Add coordinates to the path
+        for loc in locations {
+            
             path.add(loc)
             
             // Add waypoint marker to the map
-            addMarker(loc: loc)
+            addMarker(loc: loc, index: index)
             
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
@@ -130,30 +146,26 @@ class ViewController: UIViewController {
             
             // Add waypoint to the list
             waypointList.append(waypoint)
+            
+            index = index + 1
         }
-        
-        // Update the distance label
-        let distance = GMSGeometryLength(path)
-        
-        distanceLabel.text = "Distance: " + String(Int(distance)) + " ft"
         
         let polyLine = GMSPolyline(path: path)
         polyLine.strokeWidth = 3
         polyLine.strokeColor = UIColor.magenta
         polyLine.map = googleMapView
         
-        // Add aircraft back to the map
-        updateAircraftLocation()
+        // Update the distance label
+        let distance = GMSGeometryLength(path)
+        distanceLabel.text = "Distance: " + String(Int(distance)) + " ft"
         
+        // Add aircraft back to the map since it will be cleared when this function is called
+        updateAircraftLocation()
     }
     
     
-    /*@IBAction func updateToleranceLabel(_ sender: AnyObject) {
-        
-        let slider = sender as! UISlider
-        toleranceLabel.text = String(format: "%.4f", slider.value)
-        
-    }*/
+    
+    
     
     // Called on slider touch up inside
     @IBAction func updateSimplifiedPath(_ sender: AnyObject) {
@@ -413,6 +425,27 @@ extension ViewController : DJIFlightControllerDelegate {
         
         //self.headingLabel.text = String(format: "%0.1f", fc.compass!.heading)
         
+        
+    }
+    
+}
+
+// MARK: GMSMapViewDelegate
+extension ViewController : GMSMapViewDelegate {
+    
+    func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
+        
+        // Get the marker index so we can update the coordinates array
+        let index = marker.userData as! Int
+        
+        // Update the coordinate of the dropped marker
+        coordinates[index] = marker.position
+        
+        // Clear the map
+        googleMapView.clear()
+        
+        // Redraw the path
+        addPathToMap(locations: coordinates)
         
     }
     
