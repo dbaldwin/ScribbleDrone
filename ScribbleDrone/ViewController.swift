@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  ScribbleDrone
@@ -117,33 +118,30 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     // Draw the path on the map
     func addPathToMap(locations: [CLLocationCoordinate2D]) {
         
-        // Remove all waypoints from the list
-        waypointList.removeAll()
-        
         // Loop through the coordinates and create the polyline
         let path = GMSMutablePath()
         
         // Store the marker's index so we can reference it on drag/drop events
         var index = 0
         
+        // Remove all waypoints from the list before we add them
+        waypointList.removeAll()
+        
         // Add coordinates to the path
         for loc in locations {
             
-            path.add(loc)
-            
-            // Add waypoint marker to the map
-            addMarker(loc: loc, index: index)
-            
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
-            
-            // Setting altitude to 20m for now
-            waypoint.altitude = 20
             
             //waypoint.cornerRadiusInMeters = abcd
             
             // Add waypoint to the list
             waypointList.append(waypoint)
+            
+            path.add(loc)
+            
+            // Add waypoint marker to the map
+            addMarker(loc: loc, index: index)
             
             index = index + 1
         }
@@ -187,17 +185,26 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    @IBAction func launchMission(_ sender: AnyObject) {
+    func launchMission(altitude: Float, speed: Float) {
         
         // Remove all waypoints from mission before adding them
         waypointMission.removeAllWaypoints()
         
         // Setup mission parameters
         waypointMission.maxFlightSpeed = 10
-        waypointMission.autoFlightSpeed = 5
+        waypointMission.autoFlightSpeed = speed
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
         waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        
+        // Let's loop through the waypoint list and set the altitude
+        for waypoint in waypointList {
+            
+            let wp = waypoint as! DJIWaypoint
+            wp.altitude = altitude
+            //wp.cornerRadiusInMeters = 1 // Need to tackle this at some point
+            
+        }
         
         // Add the waypoint list to the mission
         waypointMission.addWaypoints(waypointList)
@@ -264,6 +271,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             // Don't display a popover arrow
             controller?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
             controller?.delegate = self
+            
+        } else if segue.identifier == "missionParamsSegue" {
+            
+            // Setup the delegate so we can receive params for the mission (altitude, speed)
+            let vc = segue.destination as! MissionParamsViewController
+            vc.delegate = self
             
         }
         
@@ -457,4 +470,16 @@ extension ViewController : SimplifyPopoverViewControllerDelegate {
         
     }
     
+}
+
+extension ViewController : MissionParamsViewControllerDelegate {
+    
+    func go(altitude: Float, speed: Float) {
+        
+        print("about to launch mission")
+        
+        launchMission(altitude: altitude, speed: speed)
+        
+    }
+
 }
