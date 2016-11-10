@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 import DJISDK
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIPopoverPresentationControllerDelegate, SimplifyPopoverViewControllerDelegate {
     
     @IBOutlet weak var googleMapView: GMSMapView!
     
@@ -180,6 +180,12 @@ class ViewController: UIViewController {
         
     }
     
+    func updateSimplifiedPath2(tolerance: Float) {
+        
+        print("Tolerance is this: " + String(tolerance))
+        
+    }
+    
     // Just in case user slides too fast or beyond endpoints we'll cover the touch up outside
     @IBAction func sliderTouchUpOutside(_ sender: AnyObject) {
         
@@ -281,6 +287,35 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func displaySimplifyPopover(_ sender: AnyObject) {
+        
+        
+        
+    }
+    
+    
+    // Handles the segue = display a small popover for the simply slider
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "simplifySegue" {
+            
+            let vc = segue.destination as! SimplifyPopoverViewController
+            vc.preferredContentSize = CGSize(width: 275, height: 75)
+            let controller = vc.popoverPresentationController
+            // Don't display a popover arrow
+            controller?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
+            controller?.delegate = self
+            
+        }
+        
+    }
+    
+    // This is used to properly display a popover on iPhone
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        
+        return .none
+        
+    }
     
     func updateAircraftLocation() {
         
