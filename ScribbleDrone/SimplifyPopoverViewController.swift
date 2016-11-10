@@ -10,7 +10,7 @@ import UIKit
 
 protocol SimplifyPopoverViewControllerDelegate {
     
-    func updateSimplifiedPath2(tolerance: Float)
+    func updateSimplifiedPath(tolerance: Float)
     
 }
 
@@ -29,19 +29,8 @@ class SimplifyPopoverViewController: UIViewController {
         
         let slider = sender as! UISlider
         
-        delegate?.updateSimplifiedPath2(tolerance: slider.value)
+        delegate?.updateSimplifiedPath(tolerance: slider.value)
         
     }
-    
-    /*func updateSimplifiedPath(_ sender: AnyObject) {
-        
-        googleMapView.clear()
-        
-        let slider = sender as! UISlider
-        
-        print("Updating path with tolerance: " + String(slider.value))
-        
-        drawSimplifiedGooglePath(tolerance: slider.value)
-        
-    }*/
+
 }

@@ -76,7 +76,6 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="displaySimplifyPopover:" destination="BYZ-38-t0r" eventType="touchUpInside" id="702-qX-3Ws"/>
                                             <segue destination="eZy-nm-7jG" kind="popoverPresentation" identifier="simplifySegue" popoverAnchorView="eWq-2Y-98a" id="csY-Tz-Sk2">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
@@ -95,16 +94,6 @@
                                             <action selector="launchMission:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PbZ-u6-Rdv"/>
                                         </connections>
                                     </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="2.5000000000000001e-05" translatesAutoresizingMaskIntoConstraints="NO" id="FrY-sQ-Vhw">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="246" id="cKJ-0f-koA"/>
-                                            <constraint firstAttribute="height" constant="30" id="y0w-cq-uKf"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="sliderTouchUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="LNe-ng-IOC"/>
-                                            <action selector="updateSimplifiedPath:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vIl-IQ-TgU"/>
-                                        </connections>
-                                    </slider>
                                     <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ISc-I5-bUl">
                                         <constraints>
                                             <constraint firstAttribute="height" constant="31" id="GGc-1t-ZwP"/>
@@ -117,15 +106,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="FrY-sQ-Vhw" firstAttribute="leading" secondItem="W3w-fN-wZb" secondAttribute="trailing" constant="25" id="23s-M7-3Wu"/>
                                     <constraint firstAttribute="bottom" secondItem="2TV-Gg-3hj" secondAttribute="bottom" constant="5" id="3FK-wY-O9a"/>
                                     <constraint firstAttribute="bottom" secondItem="EpR-KK-B7T" secondAttribute="bottom" constant="10" id="4nQ-Fj-uYe"/>
-                                    <constraint firstItem="ISc-I5-bUl" firstAttribute="leading" secondItem="FrY-sQ-Vhw" secondAttribute="trailing" constant="15" id="AW6-w1-0cA"/>
                                     <constraint firstAttribute="height" constant="40" id="Gmf-dL-ofd"/>
                                     <constraint firstAttribute="bottom" secondItem="W3w-fN-wZb" secondAttribute="bottom" constant="5" id="I70-dJ-7KB"/>
                                     <constraint firstAttribute="bottom" secondItem="ISc-I5-bUl" secondAttribute="bottom" constant="5" id="LEk-7i-40a"/>
                                     <constraint firstAttribute="bottom" secondItem="eWq-2Y-98a" secondAttribute="bottom" constant="5" id="LUi-wL-ubI"/>
                                     <constraint firstItem="EpR-KK-B7T" firstAttribute="leading" secondItem="eWq-2Y-98a" secondAttribute="trailing" constant="5" id="Ma8-4H-zKQ"/>
+                                    <constraint firstItem="ISc-I5-bUl" firstAttribute="leading" secondItem="W3w-fN-wZb" secondAttribute="trailing" constant="15" id="NlI-AE-qV1"/>
                                     <constraint firstAttribute="bottom" secondItem="eWq-2Y-98a" secondAttribute="bottom" constant="5" id="QdE-rD-FYH"/>
                                     <constraint firstItem="2TV-Gg-3hj" firstAttribute="leading" secondItem="QCy-K6-ymu" secondAttribute="leading" constant="5" id="Sa8-hU-byd"/>
                                     <constraint firstAttribute="bottom" secondItem="FnF-E0-AHR" secondAttribute="bottom" constant="10" id="dme-bU-FJJ"/>
@@ -133,7 +121,6 @@
                                     <constraint firstItem="FnF-E0-AHR" firstAttribute="leading" secondItem="2TV-Gg-3hj" secondAttribute="trailing" constant="5" id="kzH-9w-ist"/>
                                     <constraint firstAttribute="bottom" secondItem="IQ3-C8-J5o" secondAttribute="bottom" constant="5" id="lkd-xR-Njo"/>
                                     <constraint firstItem="eWq-2Y-98a" firstAttribute="leading" secondItem="FnF-E0-AHR" secondAttribute="trailing" constant="5" id="tda-ld-rXV"/>
-                                    <constraint firstAttribute="bottom" secondItem="FrY-sQ-Vhw" secondAttribute="bottom" constant="6" id="wXS-Ci-AQV"/>
                                     <constraint firstItem="W3w-fN-wZb" firstAttribute="leading" secondItem="EpR-KK-B7T" secondAttribute="trailing" constant="5" id="x9Z-Pa-TCp"/>
                                 </constraints>
                             </view>
@@ -220,7 +207,6 @@
                         <outlet property="googleMapView" destination="kNa-EI-9TI" id="qez-yR-4lp"/>
                         <outlet property="satellitesLabel" destination="Gg5-4N-Rrz" id="Hif-tD-Zdq"/>
                         <outlet property="statusLabel" destination="bNb-ui-Kpa" id="Kvs-ub-uTl"/>
-                        <outlet property="toleranceSlider" destination="FrY-sQ-Vhw" id="FcH-9I-SRu"/>
                         <outlet property="waypointLabel" destination="SDP-zf-STV" id="0qf-HZ-Vk3"/>
                     </connections>
                 </viewController>

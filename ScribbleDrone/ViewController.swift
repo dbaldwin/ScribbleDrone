@@ -10,11 +10,9 @@ import UIKit
 import GoogleMaps
 import DJISDK
 
-class ViewController: UIViewController, UIPopoverPresentationControllerDelegate, SimplifyPopoverViewControllerDelegate {
+class ViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var googleMapView: GMSMapView!
-    
-    @IBOutlet weak var toleranceSlider: UISlider!
     
     @IBOutlet weak var waypointLabel: UILabel!
     
@@ -163,40 +161,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate,
         updateAircraftLocation()
     }
     
-    
-    
-    
-    
-    // Called on slider touch up inside
-    @IBAction func updateSimplifiedPath(_ sender: AnyObject) {
-        
-        googleMapView.clear()
-        
-        let slider = sender as! UISlider
-        
-        print("Updating path with tolerance: " + String(slider.value))
-        
-        drawSimplifiedGooglePath(tolerance: slider.value)
-        
-    }
-    
-    func updateSimplifiedPath2(tolerance: Float) {
-        
-        print("Tolerance is this: " + String(tolerance))
-        
-    }
-    
-    // Just in case user slides too fast or beyond endpoints we'll cover the touch up outside
-    @IBAction func sliderTouchUpOutside(_ sender: AnyObject) {
-        
-        print("Touch up outside")
-        updateSimplifiedPath(sender)
-        
-    }
-    
-    
-    
-    
     @IBAction func beginDrawing(_ sender: AnyObject) {
         
         // This adds the canvas view for drawing
@@ -214,8 +178,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate,
         self.canvasView.removeFromSuperview()
         
         waypointLabel.text = "Waypoints: 0"
-        toleranceSlider.value = 0.0
-        //toleranceLabel.text = "0.0"
         
         distanceLabel.text = "Distance: 0 ft"
         
@@ -287,13 +249,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate,
         
     }
     
-    @IBAction func displaySimplifyPopover(_ sender: AnyObject) {
-        
-        
-        
-    }
-    
-    
     // Handles the segue = display a small popover for the simply slider
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -301,6 +256,10 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate,
             
             let vc = segue.destination as! SimplifyPopoverViewController
             vc.preferredContentSize = CGSize(width: 275, height: 75)
+            
+            // This is so we can receive slider events from the popup
+            vc.delegate = self
+        
             let controller = vc.popoverPresentationController
             // Don't display a popover arrow
             controller?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
@@ -481,6 +440,20 @@ extension ViewController : GMSMapViewDelegate {
         
         // Redraw the path
         addPathToMap(locations: coordinates)
+        
+    }
+    
+}
+
+extension ViewController : SimplifyPopoverViewControllerDelegate {
+    
+    func updateSimplifiedPath(tolerance: Float) {
+        
+        print("Tolerance is this: " + String(tolerance))
+        
+        googleMapView.clear()
+        
+        drawSimplifiedGooglePath(tolerance: tolerance)
         
     }
     
