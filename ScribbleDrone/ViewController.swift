@@ -23,6 +23,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBOutlet weak var satellitesLabel: UILabel!
     
+    @IBOutlet weak var flightTimeLabel: UILabel!
+    
     var coordinates = [CLLocationCoordinate2D]()
     
     var waypointMission:DJIWaypointMission = DJIWaypointMission()
@@ -153,7 +155,11 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         // Update the distance label
         let distance = GMSGeometryLength(path)
-        distanceLabel.text = "Distance: " + String(Int(distance)) + " ft"
+        distanceLabel.text = "Distance: " + String(Int(distance)) + " m"
+        
+        let flight_time = distance / 5
+        
+        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
         
         // Add aircraft back to the map since it will be cleared when this function is called
         updateAircraftLocation()
@@ -177,7 +183,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         waypointLabel.text = "Waypoints: 0"
         
-        distanceLabel.text = "Distance: 0 ft"
+        distanceLabel.text = "Distance: 0 m"
+        
+        flightTimeLabel.text = "Est. flight time: 0 s"
         
         // Add aircraft back to the map
         updateAircraftLocation()

@@ -205,6 +205,7 @@
                     </view>
                     <connections>
                         <outlet property="distanceLabel" destination="r7L-co-b3z" id="sxw-Zu-drD"/>
+                        <outlet property="flightTimeLabel" destination="egB-ZA-GoM" id="B7n-tR-Qyf"/>
                         <outlet property="googleMapView" destination="kNa-EI-9TI" id="qez-yR-4lp"/>
                         <outlet property="satellitesLabel" destination="Gg5-4N-Rrz" id="Hif-tD-Zdq"/>
                         <outlet property="statusLabel" destination="bNb-ui-Kpa" id="Kvs-ub-uTl"/>

@@ -55,8 +55,9 @@ class MissionParamsViewController: UIViewController {
     
     @IBAction func launch(_ sender: AnyObject) {
         
-        delegate?.go(altitude: altitude, speed: speed)
         self.dismiss(animated: true, completion: nil)
+        delegate?.go(altitude: altitude, speed: speed)
+        
     }
     
     
