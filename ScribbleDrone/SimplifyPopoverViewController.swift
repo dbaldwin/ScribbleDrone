@@ -31,6 +31,7 @@ class SimplifyPopoverViewController: UIViewController {
         
         delegate?.updateSimplifiedPath(tolerance: slider.value)
         
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
