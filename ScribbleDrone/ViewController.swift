@@ -1,4 +1,3 @@
-
 //
 //  ViewController.swift
 //  ScribbleDrone
@@ -32,7 +31,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var missionManager:DJIMissionManager = DJIMissionManager.sharedInstance()!
     
     // Stores coordinates that are used to create the waypoint mission
-    var waypointList: [AnyObject]=[]
+    var waypointList: [DJIWaypoint]=[]
     
     var isMapCenteredOnAircraft = false
     
@@ -41,6 +40,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var aircraftLocation:CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
     
     var aircraftMarker = GMSMarker()
+    
+    var simplifiedTolerance : Float = 0
     
     
     lazy var canvasView:CanvasView = {
@@ -62,6 +63,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         googleMapView.mapType = kGMSTypeHybrid
         googleMapView.isMyLocationEnabled = true;
         googleMapView.settings.myLocationButton = true;
+        googleMapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         
         // Creates a marker in the center of the map.
         /*let marker = GMSMarker()
@@ -120,30 +122,33 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     // Draw the path on the map
     func addPathToMap(locations: [CLLocationCoordinate2D]) {
         
+        // Remove all waypoints from the list
+        waypointList.removeAll()
+        
         // Loop through the coordinates and create the polyline
         let path = GMSMutablePath()
         
         // Store the marker's index so we can reference it on drag/drop events
         var index = 0
         
-        // Remove all waypoints from the list before we add them
-        waypointList.removeAll()
-        
         // Add coordinates to the path
         for loc in locations {
-            
-            // Initialize the waypoint
-            let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
-            
-            //waypoint.cornerRadiusInMeters = abcd
-            
-            // Add waypoint to the list
-            waypointList.append(waypoint)
             
             path.add(loc)
             
             // Add waypoint marker to the map
             addMarker(loc: loc, index: index)
+            
+            // Initialize the waypoint
+            let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
+            
+            // Setting altitude to 20m for now
+            waypoint.altitude = 20
+            
+            //waypoint.cornerRadiusInMeters = abcd
+            
+            // Add waypoint to the list
+            waypointList.append(waypoint)
             
             index = index + 1
         }
@@ -193,26 +198,17 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    func launchMission(altitude: Float, speed: Float) {
+    @IBAction func launchMission(_ sender: AnyObject) {
         
         // Remove all waypoints from mission before adding them
         waypointMission.removeAllWaypoints()
         
         // Setup mission parameters
         waypointMission.maxFlightSpeed = 10
-        waypointMission.autoFlightSpeed = speed
+        waypointMission.autoFlightSpeed = 5
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
         waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
-        
-        // Let's loop through the waypoint list and set the altitude
-        for waypoint in waypointList {
-            
-            let wp = waypoint as! DJIWaypoint
-            wp.altitude = altitude
-            //wp.cornerRadiusInMeters = 1 // Need to tackle this at some point
-            
-        }
         
         // Add the waypoint list to the mission
         waypointMission.addWaypoints(waypointList)
@@ -280,12 +276,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             controller?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
             controller?.delegate = self
             
-        } else if segue.identifier == "missionParamsSegue" {
-            
-            // Setup the delegate so we can receive params for the mission (altitude, speed)
-            let vc = segue.destination as! MissionParamsViewController
-            vc.delegate = self
-            
         }
         
     }
@@ -311,6 +301,31 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         aircraftMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         aircraftMarker.map = googleMapView
         
+    }
+    
+    //Angle in Radians
+    func rotateAroundXAxis(angle: Double) -> [CLLocationCoordinate3D] {
+        
+        let coordinates = SwiftSimplify.simplify(self.coordinates, tolerance: self.simplifiedTolerance, highQuality: true)
+        
+        var newCoordinates = [CLLocationCoordinate3D]()
+        
+        newCoordinates.append(CLLocationCoordinate3D(longitude: coordinates[0].longitude, latitude: coordinates[0].latitude, altitude: waypointList[0].altitude))
+        
+        for i in 1..<coordinates.count {
+            newCoordinates.append(CLLocationCoordinate3D(longitude: coordinates[i].longitude, latitude: newCoordinates[i-1].latitude+(coordinates[i].latitude-coordinates[i-1].latitude)*cos(angle), altitude: newCoordinates[i-1].altitude+Float(GMSGeometryDistance(CLLocationCoordinate2D(latitude: coordinates[i].latitude, longitude: coordinates[i].longitude), CLLocationCoordinate2D(latitude: coordinates[i-1].latitude, longitude: coordinates[i].longitude))*sin(angle)*(((coordinates[i].latitude-coordinates[i-1].latitude)<0) ? -1:1))))
+        }
+        
+        print(newCoordinates[1])
+        
+        return newCoordinates
+    }
+    
+    @IBAction func tiltAngleChanged(_ sender: UISlider) {
+        print(sin(sender.value))
+        googleMapView.clear()
+        let newCoordinates = rotateAroundXAxis(angle: Double(sender.value))
+        addPathToMap(locations: newCoordinates.map{return CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)})
     }
     
 }
@@ -466,11 +481,14 @@ extension ViewController : GMSMapViewDelegate {
     
 }
 
+// MARK: SimplifyPopoverViewControllerDelegate
 extension ViewController : SimplifyPopoverViewControllerDelegate {
     
     func updateSimplifiedPath(tolerance: Float) {
         
         print("Tolerance is this: " + String(tolerance))
+        
+        self.simplifiedTolerance = tolerance
         
         googleMapView.clear()
         
@@ -480,14 +498,9 @@ extension ViewController : SimplifyPopoverViewControllerDelegate {
     
 }
 
-extension ViewController : MissionParamsViewControllerDelegate {
-    
-    func go(altitude: Float, speed: Float) {
-        
-        print("about to launch mission")
-        
-        launchMission(altitude: altitude, speed: speed)
-        
-    }
-
+struct CLLocationCoordinate3D {
+    var longitude, latitude : CLLocationDegrees
+    var altitude : Float
 }
+
+
