@@ -22,8 +22,16 @@ class MissionParamsViewController: UIViewController {
     var delegate : MissionParamsViewControllerDelegate?
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
+    @IBOutlet weak var altitudeSlider: UISlider!
+    @IBOutlet weak var speedSlider: UISlider!
     
     override func viewDidLoad() {
+        
+        // Set the slider values which can be passed from the main VC so we can persist the values
+        speedSlider.value = speed
+        altitudeSlider.value = altitude
+        altitudeLabel.text = "ALTITUDE: " + String(altitude) + " m"
+        speedLabel.text = "SPEED: " + String(speed) + " m/s"
         
         super.viewDidLoad()
         

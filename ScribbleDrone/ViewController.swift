@@ -42,6 +42,11 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var aircraftMarker = GMSMarker()
     
+    var speed:Float = 5.0
+    
+    var altitude:Float = 25.0
+    
+    var distance:CLLocationDistance = 0.0
     
     lazy var canvasView:CanvasView = {
         
@@ -154,10 +159,10 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         polyLine.map = googleMapView
         
         // Update the distance label
-        let distance = GMSGeometryLength(path)
+        distance = GMSGeometryLength(path)
         distanceLabel.text = "Distance: " + String(Int(distance)) + " m"
         
-        let flight_time = distance / 5
+        let flight_time = distance / Double(speed)
         
         flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
         
@@ -229,6 +234,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             if (error != nil) {
                 
                 print("Error uploading mission: \(error)")
+                self?.errorAlert(title: "Error Uploading Mission", message: error.debugDescription)
                 
             } else {
                 
@@ -238,7 +244,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
                 self?.missionManager.startMissionExecution(completion: {[weak self] (error: Error?) -> Void in
                     if (error != nil ) {
                         
-                        print("Error starting mission: \(error)")
+                        self?.errorAlert(title: "Error Starting Mission", message: error.debugDescription)
                         
                     } else {
                         
@@ -250,6 +256,17 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             }
             
         })
+    }
+    
+    func errorAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+            print("Handle Ok logic here")
+        }))
+        
+        present(alert, animated: true, completion: nil)
+
     }
     
     @IBAction func tiltMap(_ sender: AnyObject) {
@@ -270,7 +287,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         if segue.identifier == "simplifySegue" {
             
             let vc = segue.destination as! SimplifyPopoverViewController
-            vc.preferredContentSize = CGSize(width: 275, height: 75)
+            vc.preferredContentSize = CGSize(width: 500, height: 75)
             
             // This is so we can receive slider events from the popup
             vc.delegate = self
@@ -286,6 +303,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             let vc = segue.destination as! MissionParamsViewController
             vc.delegate = self
             
+            // Pass these in for subsequent missions to maintain settings
+            vc.speed = self.speed
+            vc.altitude = self.altitude
         }
         
     }
@@ -484,7 +504,12 @@ extension ViewController : MissionParamsViewControllerDelegate {
     
     func go(altitude: Float, speed: Float) {
         
-        print("about to launch mission")
+        self.altitude = altitude
+        self.speed = speed
+        
+        // Update the flight time label
+        let flight_time = distance / Double(speed)
+        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
         
         launchMission(altitude: altitude, speed: speed)
         

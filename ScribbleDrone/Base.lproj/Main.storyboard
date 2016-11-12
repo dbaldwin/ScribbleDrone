@@ -352,7 +352,9 @@
                     </view>
                     <connections>
                         <outlet property="altitudeLabel" destination="vyp-Dd-hVM" id="IWA-fn-237"/>
+                        <outlet property="altitudeSlider" destination="8uZ-TF-pnp" id="Ks8-Le-oXt"/>
                         <outlet property="speedLabel" destination="22t-zc-1ce" id="8Dg-71-e7z"/>
+                        <outlet property="speedSlider" destination="PNg-tk-VL2" id="89j-hy-zFD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nwZ-q9-Ply" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -368,13 +370,13 @@
                         <viewControllerLayoutGuide type="bottom" id="Cer-kL-aNi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4bF-ym-hNq">
-                        <rect key="frame" x="0.0" y="0.0" width="275" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="2.4999999368446879e-05" translatesAutoresizingMaskIntoConstraints="NO" id="abb-kh-Uvx">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="7.4999999999999993e-05" translatesAutoresizingMaskIntoConstraints="NO" id="abb-kh-Uvx">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="GHu-7w-h1h"/>
-                                    <constraint firstAttribute="width" constant="246" id="cGJ-5d-yt2"/>
+                                    <constraint firstAttribute="width" constant="475" id="cGJ-5d-yt2"/>
                                 </constraints>
                                 <connections>
                                     <action selector="touchUpInside:" destination="eZy-nm-7jG" eventType="touchUpInside" id="0cU-s6-ht1"/>
@@ -388,7 +390,7 @@
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="275" height="50"/>
+                    <size key="freeformSize" width="500" height="50"/>
                     <connections>
                         <outlet property="simplifySlider" destination="abb-kh-Uvx" id="h3B-Tv-esn"/>
                     </connections>
