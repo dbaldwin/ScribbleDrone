@@ -63,7 +63,7 @@ public class SwiftSimplify {
         return result
     }
     
-    private class func simplifyRadialDistance<T>(_ points: [T], tolerance: Float!) -> [T] {
+    private class func simplifyRadialDistance<T>(_ points: [T], tolerance: Float) -> [T] {
         var prevPoint: T = points.first!
         var newPoints: [T] = [prevPoint]
         var point: T = points[1]
