@@ -209,9 +209,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
             
-            // Set altitude for the waypoint
-            waypoint.altitude = altitude
-            
+            // In the future we could set this as a param to get a smoother flight
             //waypoint.cornerRadiusInMeters = abcd
             
             // Add waypoint to the list
@@ -284,6 +282,13 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
         waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        
+        // Let's loop through the waypoints and set the fixed altitude for the 2D flight from the params screen
+        for waypoint in waypointList {
+            
+            waypoint.altitude = altitude
+            
+        }
         
         // Add the waypoint list to the mission
         waypointMission.addWaypoints(waypointList)
