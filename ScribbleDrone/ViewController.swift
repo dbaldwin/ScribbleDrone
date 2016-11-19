@@ -550,7 +550,7 @@ extension ViewController : DJIFlightControllerDelegate {
         aircraftLocation = state.aircraftLocation
         aircraftHeading = (fc.compass?.heading)!
         
-        altitudeLabel.text = "Altitude: " + String(state.altitude) + "m"
+        altitudeLabel.text = "Altitude: " + String(state.altitude) + " m"
         
         if(!isMapCenteredOnAircraft) {
             
