@@ -93,13 +93,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IQ3-C8-J5o">
-                                        <rect key="frame" x="593" y="5" width="69" height="30"/>
+                                        <rect key="frame" x="562" y="5" width="100" height="30"/>
                                         <color key="backgroundColor" red="0.057456653565168381" green="0.43730771541595459" blue="0.0053336471319198608" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="IQW-a3-bTl"/>
-                                            <constraint firstAttribute="width" constant="69" id="ZBr-BU-Gaz"/>
+                                            <constraint firstAttribute="width" constant="100" id="ZBr-BU-Gaz"/>
                                         </constraints>
-                                        <state key="normal" title="Launch">
+                                        <state key="normal" title="Pre-Launch">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -440,7 +440,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="7.4999999999999993e-05" translatesAutoresizingMaskIntoConstraints="NO" id="abb-kh-Uvx">
-                                <rect key="frame" x="10.5" y="10" width="479" height="31"/>
+                                <rect key="frame" x="11" y="10" width="479" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="GHu-7w-h1h"/>
                                     <constraint firstAttribute="width" constant="475" id="cGJ-5d-yt2"/>
