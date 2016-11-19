@@ -11,6 +11,11 @@ import UIKit
 import GoogleMaps
 import DJISDK
 
+struct CLLocationCoordinate3D {
+    var longitude, latitude : CLLocationDegrees
+    var altitude : Float
+}
+
 class ViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var googleMapView: GMSMapView!
@@ -25,6 +30,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBOutlet weak var flightTimeLabel: UILabel!
     
+    @IBOutlet weak var altitudeLabel: UILabel!
+    
+    @IBOutlet weak var batteryLabel: UILabel!
+    
+    @IBOutlet weak var drawButton: UIButton!
+    
     var coordinates = [CLLocationCoordinate2D]()
     
     var waypointMission:DJIWaypointMission = DJIWaypointMission()
@@ -32,7 +43,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var missionManager:DJIMissionManager = DJIMissionManager.sharedInstance()!
     
     // Stores coordinates that are used to create the waypoint mission
-    var waypointList: [AnyObject]=[]
+    var waypointList: [DJIWaypoint]=[]
     
     var isMapCenteredOnAircraft = false
     
@@ -41,6 +52,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var aircraftLocation:CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
     
     var aircraftMarker = GMSMarker()
+    
+    var simplifiedTolerance:Float = 0
     
     var speed:Float = 5.0
     
@@ -67,6 +80,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         googleMapView.mapType = kGMSTypeHybrid
         googleMapView.isMyLocationEnabled = true;
         googleMapView.settings.myLocationButton = true;
+        googleMapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         
         // Creates a marker in the center of the map.
         /*let marker = GMSMarker()
@@ -117,9 +131,64 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         self.canvasView.removeFromSuperview()
         self.canvasView.image = nil
         
+        // Deselect the draw button
+        drawButton.backgroundColor = UIColor.black
+        
         // Draw the path on the map
         addPathToMap(locations: simplifiedCoordinates)
         
+    }
+    
+    func add3DPathToMap(locations: [CLLocationCoordinate3D]) {
+        
+        // Loop through the coordinates and create the polyline
+        let path = GMSMutablePath()
+        
+        // Store the marker's index so we can reference it on drag/drop events
+        var index = 0
+        
+        // Remove all waypoints from the list before we add them
+        waypointList.removeAll()
+        
+        // Add coordinates to the path
+        for loc in locations {
+            
+            let loc2D = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+            
+            // Initialize the waypoint
+            let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc2D)
+            
+            // Set altitude for the waypoint
+            waypoint.altitude = loc.altitude
+            
+            //waypoint.cornerRadiusInMeters = abcd
+            
+            // Add waypoint to the list
+            waypointList.append(waypoint)
+            
+            path.add(loc2D)
+            
+            // Add waypoint marker to the map
+            addMarker(loc: loc2D, index: index)
+            
+            index = index + 1
+        }
+        
+        let polyLine = GMSPolyline(path: path)
+        polyLine.strokeWidth = 3
+        polyLine.strokeColor = UIColor.magenta
+        polyLine.map = googleMapView
+        
+        // Update the distance label
+        distance = GMSGeometryLength(path)
+        distanceLabel.text = "Distance: " + String(Int(distance)) + " m"
+        
+        let flight_time = distance / Double(speed)
+        
+        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
+        
+        // Add aircraft back to the map since it will be cleared when this function is called
+        updateAircraftLocation()
     }
     
     // Draw the path on the map
@@ -139,6 +208,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
+            
+            // Set altitude for the waypoint
+            waypoint.altitude = altitude
             
             //waypoint.cornerRadiusInMeters = abcd
             
@@ -172,6 +244,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func beginDrawing(_ sender: AnyObject) {
         
+        (sender as! UIButton).backgroundColor = UIColor.darkGray
+        
         // This adds the canvas view for drawing
         self.view.addSubview(canvasView)
         
@@ -181,6 +255,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     @IBAction func resetDrawing(_ sender: AnyObject) {
         
         googleMapView.clear()
+        googleMapView.animate(toViewingAngle: 0)
         
         self.coordinates.removeAll()
         self.canvasView.image = nil
@@ -209,15 +284,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
         waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
-        
-        // Let's loop through the waypoint list and set the altitude
-        for waypoint in waypointList {
-            
-            let wp = waypoint as! DJIWaypoint
-            wp.altitude = altitude
-            //wp.cornerRadiusInMeters = 1 // Need to tackle this at some point
-            
-        }
         
         // Add the waypoint list to the mission
         waypointMission.addWaypoints(waypointList)
@@ -271,12 +337,26 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func tiltMap(_ sender: AnyObject) {
         
+        googleMapView.clear()
+        
         let toggle = sender as! UISwitch
         
+        // Vertical path
         if(toggle.isOn) {
+            
             googleMapView.animate(toViewingAngle: 90)
+            
+            let newCoordinates = rotateAroundXAxis(angle: 90.0)
+            
+            add3DPathToMap(locations: newCoordinates)
+        
+        // Standard path
         } else {
+            
             googleMapView.animate(toViewingAngle: 0)
+            
+            drawSimplifiedGooglePath(tolerance: simplifiedTolerance)
+            
         }
         
     }
@@ -331,6 +411,25 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         aircraftMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         aircraftMarker.map = googleMapView
         
+    }
+    
+    func rotateAroundXAxis(angle: Double) -> [CLLocationCoordinate3D] {
+        
+        let simplifiedCoordinates = SwiftSimplify.simplify(self.coordinates, tolerance: self.simplifiedTolerance, highQuality: true)
+        
+        print("rotateAroundXAxis coordinates length" + String(simplifiedCoordinates.count))
+        
+        var newCoordinates = [CLLocationCoordinate3D]()
+        
+        newCoordinates.append(CLLocationCoordinate3D(longitude: simplifiedCoordinates[0].longitude, latitude: simplifiedCoordinates[0].latitude, altitude: altitude))
+        
+        for i in 1..<simplifiedCoordinates.count {
+            newCoordinates.append(CLLocationCoordinate3D(longitude: simplifiedCoordinates[i].longitude, latitude: newCoordinates[i-1].latitude+(simplifiedCoordinates[i].latitude-simplifiedCoordinates[i-1].latitude)*cos(angle), altitude: newCoordinates[i-1].altitude+Float(GMSGeometryDistance(CLLocationCoordinate2D(latitude: simplifiedCoordinates[i].latitude, longitude: simplifiedCoordinates[i].longitude), CLLocationCoordinate2D(latitude: simplifiedCoordinates[i-1].latitude, longitude: simplifiedCoordinates[i].longitude))*sin(angle)*(((simplifiedCoordinates[i].latitude-simplifiedCoordinates[i-1].latitude)<0) ? -1:1))))
+        }
+        
+        print(newCoordinates)
+        
+        return newCoordinates
     }
     
 }
@@ -418,6 +517,10 @@ extension ViewController : DJISDKManagerDelegate
         let fc = (DJISDKManager.product() as! DJIAircraft).flightController
         fc?.delegate = self
         
+        // Setup the battery delegate
+        let batt = (DJISDKManager.product() as! DJIAircraft).battery
+        batt?.delegate = self
+        
     }
     
     func product(_ product: DJIBaseProduct, connectivityChanged isConnected: Bool) {
@@ -429,6 +532,9 @@ extension ViewController : DJISDKManagerDelegate
         } else {
             
             statusLabel.text = "Status: Disconnected"
+            batteryLabel.text = "Battery: n/a"
+            altitudeLabel.text = "Altitude: n/a"
+            satellitesLabel.text = "Satellites: n/a"
             print("Product Disconnected")
         }
     }
@@ -443,6 +549,8 @@ extension ViewController : DJIFlightControllerDelegate {
         satellitesLabel.text = "Satellites: " + String(state.satelliteCount)
         aircraftLocation = state.aircraftLocation
         aircraftHeading = (fc.compass?.heading)!
+        
+        altitudeLabel.text = "Altitude: " + String(state.altitude) + "m"
         
         if(!isMapCenteredOnAircraft) {
             
@@ -460,6 +568,17 @@ extension ViewController : DJIFlightControllerDelegate {
         
         //self.headingLabel.text = String(format: "%0.1f", fc.compass!.heading)
         
+        
+    }
+    
+}
+
+// MARK: DJIBatteryDelegate
+extension ViewController : DJIBatteryDelegate {
+    
+    func battery(_ battery: DJIBattery, didUpdate batteryState: DJIBatteryState) {
+        
+        batteryLabel.text = "Battery: " + String(batteryState.batteryEnergyRemainingPercent) + "%"
         
     }
     
@@ -491,6 +610,8 @@ extension ViewController : SimplifyPopoverViewControllerDelegate {
     func updateSimplifiedPath(tolerance: Float) {
         
         print("Tolerance is this: " + String(tolerance))
+        
+        self.simplifiedTolerance = tolerance
         
         googleMapView.clear()
         
