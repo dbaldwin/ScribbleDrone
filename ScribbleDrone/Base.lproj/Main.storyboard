@@ -259,11 +259,13 @@
                     <connections>
                         <outlet property="altitudeLabel" destination="NBr-go-GLT" id="nrc-A5-Vi6"/>
                         <outlet property="batteryLabel" destination="rIi-EG-gFT" id="oGF-da-1Sh"/>
+                        <outlet property="clearButton" destination="W3w-fN-wZb" id="c0o-wH-iCs"/>
                         <outlet property="distanceLabel" destination="r7L-co-b3z" id="sxw-Zu-drD"/>
                         <outlet property="drawButton" destination="2TV-Gg-3hj" id="iLe-jO-aXl"/>
                         <outlet property="flightTimeLabel" destination="egB-ZA-GoM" id="B7n-tR-Qyf"/>
                         <outlet property="googleMapView" destination="kNa-EI-9TI" id="qez-yR-4lp"/>
                         <outlet property="satellitesLabel" destination="Gg5-4N-Rrz" id="Hif-tD-Zdq"/>
+                        <outlet property="simplifyButton" destination="eWq-2Y-98a" id="2On-Re-hSr"/>
                         <outlet property="statusLabel" destination="bNb-ui-Kpa" id="Kvs-ub-uTl"/>
                         <outlet property="waypointLabel" destination="SDP-zf-STV" id="0qf-HZ-Vk3"/>
                     </connections>

@@ -36,6 +36,10 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBOutlet weak var drawButton: UIButton!
     
+    @IBOutlet weak var simplifyButton: UIButton!
+    
+    @IBOutlet weak var clearButton: UIButton!
+    
     var coordinates = [CLLocationCoordinate2D]()
     
     var waypointMission:DJIWaypointMission = DJIWaypointMission()
@@ -95,6 +99,25 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         // We'll use to detect marker drag/drop
         googleMapView.delegate = self
         
+        // Disable the buttons until a path is drawn
+        toggleButtons(enabled: false)
+        
+        
+    }
+    
+    // Handles the simplify and clear buttons
+    func toggleButtons(enabled: Bool) {
+        
+        simplifyButton.isEnabled = enabled
+        clearButton.isEnabled = enabled
+        
+        if(enabled) {
+            simplifyButton.setTitleColor(UIColor.white, for: .normal)
+            clearButton.setTitleColor(UIColor.white, for: .normal)
+        } else {
+            simplifyButton.setTitleColor(UIColor.lightGray, for: .normal)
+            clearButton.setTitleColor(UIColor.lightGray, for: .normal)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,6 +137,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     // Take the coordinates drawn from the canvas view and simplifies them based on tolerance
     func drawSimplifiedGooglePath(tolerance: Float) {
+        
+        // Enable buttons after drawing
+        toggleButtons(enabled: true)
         
         print("Path tolerance: " + String(tolerance))
         
@@ -136,6 +162,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         // Draw the path on the map
         addPathToMap(locations: simplifiedCoordinates)
+        
+        // Enable the buttons
         
     }
     
@@ -251,6 +279,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     
     @IBAction func resetDrawing(_ sender: AnyObject) {
+        
+        // Disable buttons
+        toggleButtons(enabled: false)
         
         googleMapView.clear()
         googleMapView.animate(toViewingAngle: 0)
