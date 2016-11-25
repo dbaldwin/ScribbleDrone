@@ -51,21 +51,26 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var isMapCenteredOnAircraft = false
     
-    var aircraftHeading:CLLocationDegrees = 0
+    var aircraftHeading: CLLocationDegrees = 0
     
-    var aircraftLocation:CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+    var aircraftLocation: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
     
     var aircraftMarker = GMSMarker()
     
-    var simplifiedTolerance:Float = 0
+    var simplifiedTolerance: Float = 0
     
-    var speed:Float = 5.0
+    var simplifySliderValue: Float = 0
     
-    var altitude:Float = 25.0
+    var speed: Float = 5.0
     
-    var distance:CLLocationDistance = 0.0
+    var altitude: Float = 25.0
     
-    lazy var canvasView:CanvasView = {
+    // Linear = 0, Curved = 1
+    var pathType: Int = 0
+    
+    var distance: CLLocationDistance = 0.0
+    
+    lazy var canvasView: CanvasView = {
         
         var overlayView = CanvasView(frame: self.googleMapView.frame)
         overlayView.isUserInteractionEnabled = true
@@ -101,6 +106,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         // Disable the buttons until a path is drawn
         toggleButtons(enabled: false)
+        
+        print("========= VIEWCONTROLLER VIEWDIDLOAD ==========")
         
         
     }
@@ -141,15 +148,15 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         // Enable buttons after drawing
         toggleButtons(enabled: true)
         
-        print("Path tolerance: " + String(tolerance))
+        //print("Path tolerance: " + String(tolerance))
         
-        print("There are " + String(coordinates.count) + " coordinates")
+        //print("There are " + String(coordinates.count) + " coordinates")
         
         let simplifiedCoordinates = SwiftSimplify.simplify(coordinates, tolerance: tolerance, highQuality: true)
         
-        print("Number of points before simplification: " + String(coordinates.count))
+        //print("Number of points before simplification: " + String(coordinates.count))
         
-        print("Number of points after simplification " + String(simplifiedCoordinates.count))
+        //print("Number of points after simplification " + String(simplifiedCoordinates.count))
         
         waypointLabel.text = "Waypoints: " + String(simplifiedCoordinates.count)
         
@@ -283,6 +290,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         // Disable buttons
         toggleButtons(enabled: false)
         
+        // Reset the slider value
+        self.simplifySliderValue = 0
+        
         googleMapView.clear()
         googleMapView.animate(toViewingAngle: 0)
         
@@ -302,7 +312,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    func launchMission(altitude: Float, speed: Float) {
+    func launchMission(pathType: Int, altitude: Float, speed: Float) {
         
         // Remove all waypoints from mission before adding them
         waypointMission.removeAllWaypoints()
@@ -312,7 +322,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         waypointMission.autoFlightSpeed = speed
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
-        waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        
+        if(pathType == 0) {
+            waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.normal
+        } else if(pathType == 1) {
+            waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+        }
         
         // Let's loop through the waypoints and set the fixed altitude for the 2D flight from the params screen
         for waypoint in waypointList {
@@ -407,6 +422,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             // This is so we can receive slider events from the popup
             vc.delegate = self
+            
+            // Set the slider value
+            vc.simplifySliderValue = simplifySliderValue
         
             let controller = vc.popoverPresentationController
             // Don't display a popover arrow
@@ -422,6 +440,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             // Pass these in for subsequent missions to maintain settings
             vc.speed = self.speed
             vc.altitude = self.altitude
+            vc.pathType = self.pathType
         }
         
     }
@@ -529,6 +548,10 @@ extension ViewController : DJISDKManagerDelegate
         
         guard let newProduct = newProduct else
         {
+            statusLabel.text = "Status: Disconnected"
+            batteryLabel.text = "Battery: n/a"
+            altitudeLabel.text = "Altitude: n/a"
+            satellitesLabel.text = "Satellites: n/a"
             print("Product Disconnected")
             return
         }
@@ -655,12 +678,19 @@ extension ViewController : SimplifyPopoverViewControllerDelegate {
         
     }
     
+    // Store this so if the user opens the simplify popup we can set the value again
+    func saveSimplifySliderValue(value: Float) {
+        
+        simplifySliderValue = value
+        
+    }
 }
 
 extension ViewController : MissionParamsViewControllerDelegate {
     
-    func go(altitude: Float, speed: Float) {
+    func go(pathType: Int, altitude: Float, speed: Float) {
         
+        self.pathType = pathType
         self.altitude = altitude
         self.speed = speed
         
@@ -668,7 +698,7 @@ extension ViewController : MissionParamsViewControllerDelegate {
         let flight_time = distance / Double(speed)
         flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
         
-        launchMission(altitude: altitude, speed: speed)
+        launchMission(pathType: pathType, altitude: altitude, speed: speed)
         
     }
 

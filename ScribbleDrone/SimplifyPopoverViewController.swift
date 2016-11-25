@@ -11,25 +11,38 @@ import UIKit
 protocol SimplifyPopoverViewControllerDelegate {
     
     func updateSimplifiedPath(tolerance: Float)
+    func saveSimplifySliderValue(value: Float)
     
 }
 
 class SimplifyPopoverViewController: UIViewController {
 
     @IBOutlet weak var simplifySlider: UISlider!
-    var delegate : SimplifyPopoverViewControllerDelegate?
+    var delegate: SimplifyPopoverViewControllerDelegate?
+    var simplifySliderValue: Float = 0
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
+        simplifySlider.value = simplifySliderValue
         
     }
     
+    @IBAction func valueChanged(_ sender: Any) {
+        
+        let slider = sender as! UISlider
+        
+        delegate?.updateSimplifiedPath(tolerance: slider.value)
+        
+    }
     
     @IBAction func touchUpInside(_ sender: AnyObject) {
         
         let slider = sender as! UISlider
         
-        delegate?.updateSimplifiedPath(tolerance: slider.value)
+        delegate?.saveSimplifySliderValue(value: slider.value)
+        
+        self.dismiss(animated: true, completion: nil)
         
     }
 
