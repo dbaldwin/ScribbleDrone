@@ -70,6 +70,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var distance: CLLocationDistance = 0.0
     
+    var progressAlertView: UIAlertController? = nil
+    
     lazy var canvasView: CanvasView = {
         
         var overlayView = CanvasView(frame: self.googleMapView.frame)
@@ -343,10 +345,31 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         missionManager.prepare(self.waypointMission, withProgress:
         {[weak self] (progress: Float) -> Void in
             
-            // This is where the upload status will go
+            // Show the progress of the mission upload
+            let message: String = "\(Int(100 * progress))% complete"
+            
+            // If progress view doesn't exist let's create it
+            if self?.progressAlertView == nil {
+                self?.progressAlertView = UIAlertController(title: "Uploading Mission", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                self?.present((self?.progressAlertView)!, animated: true, completion: nil)
+            }
+            else {
+                self?.progressAlertView!.message = message
+            }
+            
+            // When mission is fully uploaded dismiss progress view
+            if progress == 1.0 {
+                self?.progressAlertView?.dismiss(animated: true, completion: nil)
+                self?.progressAlertView = nil
+            }
             
         }, withCompletion:{[weak self] (error: Error?) -> Void in
             
+            // Dismiss the progress view
+            if self?.progressAlertView != nil  {
+                self?.progressAlertView?.dismiss(animated: true, completion: nil)
+                self?.progressAlertView = nil
+            }
             
             if (error != nil) {
                 
