@@ -65,7 +65,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var speed: Float = 5.0
     
-    var altitude: Float = 25.0
+    var missionAltitude: Float = 25.0
     
     // Linear = 0, Curved = 1
     var pathType: Int = 0
@@ -141,8 +141,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     func addMarker(loc: CLLocationCoordinate2D, index: Int) {
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
-        marker.groundAnchor = CGPoint(x: 0.5, y: 0.5);
-        marker.icon = UIImage(named: "waypoint");
+        marker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
+        marker.icon = UIImage(named: "waypoint")
         marker.isDraggable = true
         marker.userData = index
         marker.map = googleMapView
@@ -250,7 +250,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
             
-            waypoint.altitude = altitude
+            waypoint.altitude = self.missionAltitude
             
             // In the future we could set this as a param to get a smoother flight
             //waypoint.cornerRadiusInMeters = abcd
@@ -468,7 +468,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             // Pass these in for subsequent missions to maintain settings
             vc.speed = self.speed
-            vc.altitude = self.altitude
+            vc.altitude = self.missionAltitude
             vc.pathType = self.pathType
         } else if segue.identifier == "waypointConfigSegue" {
             
@@ -743,7 +743,7 @@ extension ViewController : MissionParamsViewControllerDelegate {
     func go(pathType: Int, altitude: Float, speed: Float) {
         
         self.pathType = pathType
-        self.altitude = altitude
+        self.missionAltitude = altitude
         self.speed = speed
         
         // Update the flight time label
@@ -764,6 +764,8 @@ extension ViewController: WaypointConfigViewControllerDelegate {
         
         let waypoint: DJIWaypoint = waypointList[index]
         waypoint.altitude = altitude
+        
+        currentlySelectedMarker.icon = UIImage(named: "waypoint_modified")
         
     }
     
