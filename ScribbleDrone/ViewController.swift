@@ -42,6 +42,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var coordinates = [CLLocationCoordinate2D]()
     
+    var simplifiedCoordinates = [CLLocationCoordinate2D]()
+    
     var waypointMission:DJIWaypointMission = DJIWaypointMission()
     
     var missionManager:DJIMissionManager = DJIMissionManager.sharedInstance()!
@@ -71,6 +73,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var distance: CLLocationDistance = 0.0
     
     var progressAlertView: UIAlertController? = nil
+    
+    var currentlySelectedMarker = GMSMarker()
     
     lazy var canvasView: CanvasView = {
         
@@ -140,7 +144,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         marker.groundAnchor = CGPoint(x: 0.5, y: 0.5);
         marker.icon = UIImage(named: "waypoint");
         marker.isDraggable = true
-        marker.userData = index
+        
+        marker.userData = customMarkerData(index: index, altitude: 25.0)
         marker.map = googleMapView
     }
     
@@ -152,9 +157,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         //print("Path tolerance: " + String(tolerance))
         
-        //print("There are " + String(coordinates.count) + " coordinates")
+        print("There are " + String(coordinates.count) + " coordinates")
         
-        let simplifiedCoordinates = SwiftSimplify.simplify(coordinates, tolerance: tolerance, highQuality: true)
+        simplifiedCoordinates = SwiftSimplify.simplify(coordinates, tolerance: tolerance, highQuality: true)
         
         //print("Number of points before simplification: " + String(coordinates.count))
         
@@ -176,7 +181,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
     }
     
-    func add3DPathToMap(locations: [CLLocationCoordinate3D]) {
+    /*func add3DPathToMap(locations: [CLLocationCoordinate3D]) {
         
         // Loop through the coordinates and create the polyline
         let path = GMSMutablePath()
@@ -226,7 +231,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         // Add aircraft back to the map since it will be cleared when this function is called
         updateAircraftLocation()
-    }
+    }*/
     
     // Draw the path on the map
     func addPathToMap(locations: [CLLocationCoordinate2D]) {
@@ -420,9 +425,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             googleMapView.animate(toViewingAngle: 90)
             
-            let newCoordinates = rotateAroundXAxis(angle: 90.0)
+            //let newCoordinates = rotateAroundXAxis(angle: 90.0)
             
-            add3DPathToMap(locations: newCoordinates)
+            //add3DPathToMap(locations: newCoordinates)
         
         // Standard path
         } else {
@@ -464,6 +469,15 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             vc.speed = self.speed
             vc.altitude = self.altitude
             vc.pathType = self.pathType
+        } else if segue.identifier == "waypointConfigSegue" {
+            
+            let vc = segue.destination as! WaypointConfigViewController
+            vc.delegate = self
+            
+            let userData = (currentlySelectedMarker.userData as! customMarkerData)
+            vc.waypointIndex = userData.index
+            vc.altitude = userData.altitude
+            
         }
         
     }
@@ -491,7 +505,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
     }
     
-    func rotateAroundXAxis(angle: Double) -> [CLLocationCoordinate3D] {
+    /*func rotateAroundXAxis(angle: Double) -> [CLLocationCoordinate3D] {
         
         let simplifiedCoordinates = SwiftSimplify.simplify(self.coordinates, tolerance: self.simplifiedTolerance, highQuality: true)
         
@@ -508,7 +522,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         print(newCoordinates)
         
         return newCoordinates
-    }
+    }*/
     
 }
 
@@ -675,16 +689,30 @@ extension ViewController : GMSMapViewDelegate {
         let index = marker.userData as! Int
         
         // Update the coordinate of the dropped marker
-        coordinates[index] = marker.position
+        simplifiedCoordinates[index] = marker.position
+        
+        print("Updating marker \(marker.userData) There are \(coordinates.count) coordinates after dragging")
         
         // Clear the map
         googleMapView.clear()
         
-        // Redraw the path
-        addPathToMap(locations: coordinates)
-        
+        // Redraw the path now that the marker has been moved
+        addPathToMap(locations: simplifiedCoordinates)
+ 
     }
     
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        print("Marker \(marker.userData)")
+        print("You tapped at \(marker.position.latitude), \(marker.position.longitude)")
+        
+        currentlySelectedMarker = marker
+        
+        self.performSegue(withIdentifier: "waypointConfigSegue", sender: nil)
+        
+        return true
+        
+    }
+
 }
 
 extension ViewController : SimplifyPopoverViewControllerDelegate {
@@ -725,4 +753,29 @@ extension ViewController : MissionParamsViewControllerDelegate {
         
     }
 
+}
+
+extension ViewController: WaypointConfigViewControllerDelegate {
+    
+    func updateWaypointConfig(index: Int, altitude: Float) {
+        print("Index \(index) and altitude \(altitude)")
+        
+        let waypoint: DJIWaypoint = waypointList[index]
+        waypoint.altitude = altitude
+        
+        waypointList[index] = waypoint
+        
+    }
+    
+}
+
+// Store custom data for each marker
+class customMarkerData {
+    var index: Int
+    var altitude: Float
+    
+    init(index: Int, altitude: Float) {
+        self.index = index
+        self.altitude = altitude
+    }
 }
