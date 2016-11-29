@@ -144,8 +144,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         marker.groundAnchor = CGPoint(x: 0.5, y: 0.5);
         marker.icon = UIImage(named: "waypoint");
         marker.isDraggable = true
-        
-        marker.userData = customMarkerData(index: index, altitude: 25.0)
+        marker.userData = index
         marker.map = googleMapView
     }
     
@@ -250,6 +249,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
+            
+            waypoint.altitude = altitude
             
             // In the future we could set this as a param to get a smoother flight
             //waypoint.cornerRadiusInMeters = abcd
@@ -474,9 +475,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             let vc = segue.destination as! WaypointConfigViewController
             vc.delegate = self
             
-            let userData = (currentlySelectedMarker.userData as! customMarkerData)
-            vc.waypointIndex = userData.index
-            vc.altitude = userData.altitude
+            let index = currentlySelectedMarker.userData as! Int
+            vc.waypointIndex = index
+            vc.altitude = waypointList[index].altitude
             
         }
         
@@ -757,25 +758,13 @@ extension ViewController : MissionParamsViewControllerDelegate {
 
 extension ViewController: WaypointConfigViewControllerDelegate {
     
+    // Change the altitude for the specific waypoint
     func updateWaypointConfig(index: Int, altitude: Float) {
         print("Index \(index) and altitude \(altitude)")
         
         let waypoint: DJIWaypoint = waypointList[index]
         waypoint.altitude = altitude
         
-        waypointList[index] = waypoint
-        
     }
     
-}
-
-// Store custom data for each marker
-class customMarkerData {
-    var index: Int
-    var altitude: Float
-    
-    init(index: Int, altitude: Float) {
-        self.index = index
-        self.altitude = altitude
-    }
 }

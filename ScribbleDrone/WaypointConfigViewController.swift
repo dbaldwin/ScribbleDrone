@@ -28,7 +28,7 @@ class WaypointConfigViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        waypointLabel.text = "WAYPOINT #\(waypointIndex)"
+        waypointLabel.text = "WAYPOINT #\(waypointIndex+1)"
         altitudeSlider.value = altitude
         altitudeLabel.text = "ALTITUDE: \(altitude) m"
     }
