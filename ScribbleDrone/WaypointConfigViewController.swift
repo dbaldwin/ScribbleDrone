@@ -10,18 +10,23 @@ import UIKit
 
 protocol WaypointConfigViewControllerDelegate {
     
-    func updateWaypointConfig(index: Int, altitude: Float)
+    func updateWaypointConfig(index: Int, altitude: Float, delay: Int)
     
 }
 
 class WaypointConfigViewController: UIViewController {
     
     var altitude:Float = 25.0
+    var delay:Int = 0
+    
     var delegate : WaypointConfigViewControllerDelegate?
     
     @IBOutlet weak var waypointLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var altitudeSlider: UISlider!
+    
+    @IBOutlet weak var delayLabel: UILabel!
+    @IBOutlet weak var delaySlider: UISlider!
     
     var waypointIndex: Int = 0
 
@@ -31,6 +36,9 @@ class WaypointConfigViewController: UIViewController {
         waypointLabel.text = "WAYPOINT #\(waypointIndex+1)"
         altitudeSlider.value = altitude
         altitudeLabel.text = "ALTITUDE: \(altitude) m"
+        
+        delayLabel.text = "DELAY: \(delay) s"
+        delaySlider.value = Float(delay)
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,7 +49,7 @@ class WaypointConfigViewController: UIViewController {
     
     @IBAction func saveWaypointConfig(_ sender: Any) {
         
-        delegate?.updateWaypointConfig(index: waypointIndex, altitude: altitude)
+        delegate?.updateWaypointConfig(index: waypointIndex, altitude: altitude, delay: delay)
         dismiss(animated: true, completion: nil)
         
     }
@@ -55,7 +63,16 @@ class WaypointConfigViewController: UIViewController {
         
         let slider = sender as! UISlider
         altitude = roundf(slider.value)
-        altitudeLabel.text = "ALTITUDE: " + String(altitude) + " m"
+        altitudeLabel.text = "ALTITUDE: \(altitude) m"
+        
+    }
+    
+    
+    @IBAction func updateDelay(_ sender: AnyObject) {
+        
+        let slider = sender as! UISlider
+        delay = Int(slider.value)
+        delayLabel.text = "DELAY: \(delay) s"
         
     }
     

@@ -42,6 +42,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var coordinates = [CLLocationCoordinate2D]()
     
+    var coordinates3D = [CLLocationCoordinate3D]()
+    
     var simplifiedCoordinates = [CLLocationCoordinate2D]()
     
     var waypointMission:DJIWaypointMission = DJIWaypointMission()
@@ -138,11 +140,11 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         // Dispose of any resources that can be recreated.
     }
     
-    func addMarker(loc: CLLocationCoordinate2D, index: Int) {
+    func addMarker(loc: CLLocationCoordinate2D, index: Int, icon: String) {
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
         marker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
-        marker.icon = UIImage(named: "waypoint")
+        marker.icon = UIImage(named: icon)
         marker.isDraggable = true
         marker.userData = index
         marker.map = googleMapView
@@ -250,6 +252,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             // Initialize the waypoint
             let waypoint: DJIWaypoint = DJIWaypoint(coordinate: loc)
             
+            // Initialize all waypoints to the mission altitude
             waypoint.altitude = self.missionAltitude
             
             // In the future we could set this as a param to get a smoother flight
@@ -259,9 +262,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             waypointList.append(waypoint)
             
             path.add(loc)
-            
-            // Add waypoint marker to the map
-            addMarker(loc: loc, index: index)
+                
+            addMarker(loc: loc, index: index, icon: "waypoint")
             
             index = index + 1
         }
@@ -338,9 +340,10 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
         
         // Let's loop through the waypoints and set the fixed altitude for the 2D flight from the params screen
-        for waypoint in waypointList {
+        for waypoint in waypointList {      
             
-            waypoint.altitude = altitude
+            print("Altitude for waypoint is: \(waypoint.altitude)")
+            print("Action count for waypoint is \(waypoint.waypointActions.count)")
             
         }
         
@@ -478,6 +481,16 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             let index = currentlySelectedMarker.userData as! Int
             vc.waypointIndex = index
             vc.altitude = waypointList[index].altitude
+            
+            // Set the delay
+            if waypointList[index].waypointActions.count > 0 {
+            
+                let action: DJIWaypointAction = waypointList[index].waypointActions[0] as! DJIWaypointAction
+            
+                vc.delay = Int(action.actionParam/1000)
+                
+            }
+            
             
         }
         
@@ -758,14 +771,39 @@ extension ViewController : MissionParamsViewControllerDelegate {
 
 extension ViewController: WaypointConfigViewControllerDelegate {
     
-    // Change the altitude for the specific waypoint
-    func updateWaypointConfig(index: Int, altitude: Float) {
-        print("Index \(index) and altitude \(altitude)")
+    // Change the altitude and delay for the specific waypoint
+    func updateWaypointConfig(index: Int, altitude: Float, delay: Int) {
+        print("Index \(index), altitude \(altitude), delay \(delay)")
         
         let waypoint: DJIWaypoint = waypointList[index]
-        waypoint.altitude = altitude
         
-        currentlySelectedMarker.icon = UIImage(named: "waypoint_modified")
+        // If the altitude is different than the mission altitude or the delay is not zero then show it as orange
+        if altitude != self.missionAltitude || delay != 0 {
+            waypoint.altitude = altitude
+            currentlySelectedMarker.icon = UIImage(named: "waypoint_modified")
+        } else {
+            waypoint.altitude = self.missionAltitude
+            currentlySelectedMarker.icon = UIImage(named: "waypoint")
+        }
+        
+        // Let's add a "stay" action if the delay is more than 0 seconds
+        if delay > 0 {
+            
+            let action: DJIWaypointAction = DJIWaypointAction(actionType: DJIWaypointActionType.stay, param: Int16(delay*1000))
+            
+            // Remove the action before we add a new one so we don't pile them up
+            waypoint.removeAllActions()
+            waypoint.add(action)
+            
+        }
+        
+        // If the waypoint has an existing action and the delay is set back to 0 let's remove it and reset the marker
+        if waypoint.waypointActions.count > 0 && delay == 0 {
+            
+            currentlySelectedMarker.icon = UIImage(named: "waypoint")
+            waypoint.removeAllActions()
+            
+        }
         
     }
     
