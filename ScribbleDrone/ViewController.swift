@@ -614,9 +614,9 @@ extension ViewController : DJISDKManagerDelegate
             DJISDKManager.startConnectionToProduct()
         }*/
         
-        DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
+        //DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
         
-        //DJISDKManager.startConnectionToProduct()
+        DJISDKManager.startConnectionToProduct()
         
     }
     
