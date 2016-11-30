@@ -277,12 +277,37 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         distance = GMSGeometryLength(path)
         distanceLabel.text = "Distance: " + String(Int(distance)) + " m"
         
-        let flight_time = distance / Double(speed)
-        
-        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
+        updateFlightTime()
         
         // Add aircraft back to the map since it will be cleared when this function is called
         updateAircraftLocation()
+    }
+    
+    // Update flight time based on takeoff altitude, distance of path, and delay at waypoints
+    func updateFlightTime() {
+    
+        let flight_time = Float(distance / Double(speed))
+        
+        // Trying to get this a little more accurate by including takeoff altitude
+        let firstAltitude: Float = waypointList[0].altitude
+        let takeoff_time = firstAltitude / speed
+        
+        var delay_time: Int = 0
+        
+        // Loop and add any waypoint delays
+        for waypoint in waypointList {
+            
+            if waypoint.waypointActions.count > 0 {
+                
+                let action: DJIWaypointAction = waypoint.waypointActions[0] as! DJIWaypointAction
+                delay_time += Int(action.actionParam)/1000
+                
+            }
+            
+        }
+        
+        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time + takeoff_time) + delay_time) + " s"
+        
     }
     
     @IBAction func beginDrawing(_ sender: AnyObject) {
@@ -331,7 +356,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         waypointMission.maxFlightSpeed = 10
         waypointMission.autoFlightSpeed = speed
         waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
-        waypointMission.headingMode = DJIWaypointMissionHeadingMode.auto
+        waypointMission.headingMode = DJIWaypointMissionHeadingMode.controledByRemoteController
         
         if(pathType == 0) {
             waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.normal
@@ -589,9 +614,9 @@ extension ViewController : DJISDKManagerDelegate
             DJISDKManager.startConnectionToProduct()
         }*/
         
-        //DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
+        DJISDKManager.enterDebugMode(withDebugId: "10.0.1.8")
         
-        DJISDKManager.startConnectionToProduct()
+        //DJISDKManager.startConnectionToProduct()
         
     }
     
@@ -759,9 +784,7 @@ extension ViewController : MissionParamsViewControllerDelegate {
         self.missionAltitude = altitude
         self.speed = speed
         
-        // Update the flight time label
-        let flight_time = distance / Double(speed)
-        flightTimeLabel.text = "Est. flight time : " + String(Int(flight_time)) + " s"
+        updateFlightTime()
         
         launchMission(pathType: pathType, altitude: altitude, speed: speed)
         
@@ -804,6 +827,10 @@ extension ViewController: WaypointConfigViewControllerDelegate {
             waypoint.removeAllActions()
             
         }
+        
+        // Update the estimated flight time as it needs to account for any waypoint delays
+        updateFlightTime()
+        
         
     }
     
