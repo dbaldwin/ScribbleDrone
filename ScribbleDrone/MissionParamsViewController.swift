@@ -10,7 +10,7 @@ import UIKit
 
 protocol MissionParamsViewControllerDelegate {
     
-    func go(pathType: Int, altitude: Float, speed: Float)
+    func go(pathType: Int, altitude: Float, speed: Float, finishedType: Int)
     
 }
 
@@ -20,6 +20,7 @@ class MissionParamsViewController: UIViewController {
     var speed:Float = 5.0
     var altitude:Float = 25.0
     var pathType:Int = 0
+    var finishedType:Int = 0
     
     var delegate : MissionParamsViewControllerDelegate?
     @IBOutlet weak var altitudeLabel: UILabel!
@@ -27,9 +28,11 @@ class MissionParamsViewController: UIViewController {
     @IBOutlet weak var altitudeSlider: UISlider!
     @IBOutlet weak var speedSlider: UISlider!
     @IBOutlet weak var flightPathSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var flightFinishedSegmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         
+        flightFinishedSegmentedControl.selectedSegmentIndex = finishedType
         flightPathSegmentedControl.selectedSegmentIndex = pathType
         
         // Set the slider values which can be passed from the main VC so we can persist the values
@@ -39,6 +42,14 @@ class MissionParamsViewController: UIViewController {
         speedLabel.text = "SPEED: " + String(speed) + " m/s"
         
         super.viewDidLoad()
+        
+    }
+    
+    
+    @IBAction func flightFinishedChanged(_ sender: Any) {
+        
+        let control = sender as! UISegmentedControl
+        finishedType = control.selectedSegmentIndex
         
     }
     
@@ -76,7 +87,7 @@ class MissionParamsViewController: UIViewController {
     @IBAction func launch(_ sender: AnyObject) {
         
         self.dismiss(animated: true, completion: nil)
-        delegate?.go(pathType: pathType, altitude: altitude, speed: speed)
+        delegate?.go(pathType: pathType, altitude: altitude, speed: speed, finishedType: finishedType)
         
     }
     

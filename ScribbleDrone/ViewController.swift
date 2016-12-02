@@ -72,6 +72,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     // Linear = 0, Curved = 1
     var pathType: Int = 0
     
+    // Hover = 0, RTH = 1
+    var finishedType: Int = 0
+    
     var distance: CLLocationDistance = 0.0
     
     var progressAlertView: UIAlertController? = nil
@@ -347,7 +350,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    func launchMission(pathType: Int, altitude: Float, speed: Float) {
+    func launchMission(pathType: Int, altitude: Float, speed: Float, finishedType: Int) {
         
         // Remove all waypoints from mission before adding them
         waypointMission.removeAllWaypoints()
@@ -355,13 +358,27 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         // Setup mission parameters
         waypointMission.maxFlightSpeed = 10
         waypointMission.autoFlightSpeed = speed
-        waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
+        
+        if finishedType == 0 {
+            
+            waypointMission.finishedAction = DJIWaypointMissionFinishedAction.noAction
+            
+        } else {
+            
+            waypointMission.finishedAction = DJIWaypointMissionFinishedAction.goHome
+            
+        }
+        
         waypointMission.headingMode = DJIWaypointMissionHeadingMode.controledByRemoteController
         
-        if(pathType == 0) {
+        if pathType == 0 {
+            
             waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.normal
+            
         } else if(pathType == 1) {
+            
             waypointMission.flightPathMode = DJIWaypointMissionFlightPathMode.curved
+            
         }
         
         // Let's loop through the waypoints and set the fixed altitude for the 2D flight from the params screen
@@ -498,6 +515,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             vc.speed = self.speed
             vc.altitude = self.missionAltitude
             vc.pathType = self.pathType
+            vc.finishedType = self.finishedType
+            
         } else if segue.identifier == "waypointConfigSegue" {
             
             let vc = segue.destination as! WaypointConfigViewController
@@ -778,15 +797,16 @@ extension ViewController : SimplifyPopoverViewControllerDelegate {
 
 extension ViewController : MissionParamsViewControllerDelegate {
     
-    func go(pathType: Int, altitude: Float, speed: Float) {
+    func go(pathType: Int, altitude: Float, speed: Float, finishedType: Int) {
         
         self.pathType = pathType
+        self.finishedType = finishedType
         self.missionAltitude = altitude
         self.speed = speed
         
         updateFlightTime()
         
-        launchMission(pathType: pathType, altitude: altitude, speed: speed)
+        launchMission(pathType: pathType, altitude: altitude, speed: speed, finishedType: finishedType)
         
     }
 
