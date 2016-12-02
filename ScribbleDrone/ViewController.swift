@@ -425,7 +425,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             if (error != nil) {
                 
                 print("Error uploading mission: \(error)")
-                self?.errorAlert(title: "Error Uploading Mission", message: error.debugDescription)
+                self?.basicAlert(title: "Error Uploading Mission", message: error.debugDescription)
                 
             } else {
                 
@@ -435,7 +435,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
                 self?.missionManager.startMissionExecution(completion: {[weak self] (error: Error?) -> Void in
                     if (error != nil ) {
                         
-                        self?.errorAlert(title: "Error Starting Mission", message: error.debugDescription)
+                        self?.basicAlert(title: "Error Starting Mission", message: error.debugDescription)
                         
                     } else {
                         
@@ -449,7 +449,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         })
     }
     
-    func errorAlert(title: String, message: String) {
+    func basicAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
@@ -675,6 +675,9 @@ extension ViewController : DJISDKManagerDelegate
         let batt = (DJISDKManager.product() as! DJIAircraft).battery
         batt?.delegate = self
         
+        // Setup the mission manager delegate
+        missionManager.delegate = self
+        
     }
     
     func product(_ product: DJIBaseProduct, connectivityChanged isConnected: Bool) {
@@ -726,6 +729,34 @@ extension ViewController : DJIFlightControllerDelegate {
     }
     
 }
+
+// MARK: DJIMissionManagerDelegate
+extension ViewController: DJIMissionManagerDelegate {
+    
+    func missionManager(_ manager: DJIMissionManager, didFinishMissionExecution error: Error?) {
+        
+        if error != nil {
+            
+            print("Error completing mission: \(error)")
+            
+        } else {
+            
+            if finishedType == 0 {
+            
+                self.basicAlert(title: "Scribble Finished!", message: "Please take control of your aircraft.")
+            
+            } else {
+                
+                self.basicAlert(title: "Scribble Finished!", message: "Your aircraft will now return home and land automatically. You can cancel this action by toggling your flight mode switch or pressing the RTH button on your remote.")
+                
+            }
+            
+        }
+        
+    }
+    
+}
+
 
 // MARK: DJIBatteryDelegate
 extension ViewController : DJIBatteryDelegate {
@@ -855,3 +886,4 @@ extension ViewController: WaypointConfigViewControllerDelegate {
     }
     
 }
+
